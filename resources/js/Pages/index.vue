@@ -35,7 +35,6 @@
           Shop by Category
         </h2>
 
-        <!-- Mobile: 2 cols | Tablet: 3 cols | Desktop: 6 cols -->
         <div class="flex gap-4 overflow-auto">
           <Link
             v-for="category in categories"
@@ -43,9 +42,8 @@
             :href="`/products?category=${category.slug}`"
             class="group flex flex-col items-center cursor-pointer"
           >
-            <!-- Image or Color Box -->
             <div
-              class="w-full aspect-square rounded-lg overflow-hidden h-28 w-28 md:h-32 md:w-32 lg:h-40 lg:w-40 mb-2 sm:mb-3 transition-transform duration-200 shadow-sm bg-gray-900 flex items-center justify-center"
+              class="w-full aspect-square rounded-md overflow-auto h-28 w-28 md:h-32 md:w-32 lg:h-40 lg:w-40 mb-2 sm:mb-3 transition-transform duration-200 shadow-sm bg-gray-900 flex items-center justify-center"
             >
               <img
                 v-if="category.image_path"
@@ -98,43 +96,43 @@
       </section>
 
       <!-- Brands -->
-      <section class="my-12 md:my-16 lg:my-20">
-        <h2 class="text-xl sm:text-2xl font-bold text-gray-900">
+      <section class="my-10 md:my-12 lg:my-16">
+        <h2 class="mb-4 text-xl font-bold text-gray-900 md:mb-6 md:text-2xl">
           We're Brands
         </h2>
 
-        <div
-          class="mt-8 flex gap-6 overflow-x-auto pb-4 md:mt-10 lg:grid md:gap-x-10 md:gap-y-12 md:overflow-auto md:pb-0 lg:mt-12 lg:grid-cols-3 lg:gap-x-12 lg:gap-y-14"
-        >
+        <div class="flex gap-4 overflow-x-auto overflow-y-hidden">
           <Link
             v-for="brand in brands"
             :key="brand.id_brand"
             :href="`/products?brand=${brand.slug}`"
-            class="group block shrink-0 transition-opacity hover:opacity-85 md:shrink"
+            class="group flex shrink-0 flex-col items-center cursor-pointer"
           >
-            <div class="flex items-center lg:justify-center gap-3">
-              <div
+            <div
+              class="mb-2 flex h-32 w-32 items-center justify-center overflow-hidden rounded-md bg-gray-900 shadow-sm transition-transform duration-200 "
+            >
+              <img
                 v-if="brand.image_path"
-                class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden p-1 md:h-20 md:w-20"
-              >
-                <img
-                  :src="brand.image_path"
-                  :alt="brand.name"
-                  class="h-full w-full object-contain"
-                />
-              </div>
-              <span
-                v-else
-                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-900 text-sm font-bold text-white md:h-11 md:w-11"
-              >
-                {{ brand.name }}
-              </span>
-              <h3
-                class="text-xl font-bold tracking-tight text-gray-900 transition-colors group-hover:text-gray-700 md:text-2xl lg:text-3xl"
-              >
-                {{ brand.name }}
-              </h3>
+                :src="brand.image_path"
+                :alt="brand.name"
+                class="h-full w-full object-cover"
+              />
+              <p v-else class="text-3xl font-bold text-white md:text-4xl">
+                {{ brand.name.charAt(0).toUpperCase() }}
+              </p>
             </div>
+
+            <p
+              class="text-center text-xs font-semibold leading-tight text-gray-800 md:text-sm"
+            >
+              {{ brand.name }}
+            </p>
+            <p
+              v-if="brand.products_count !== undefined"
+              class="mt-0.5 text-center text-xs text-gray-500"
+            >
+              {{ brand.products_count }} items
+            </p>
           </Link>
         </div>
       </section>
