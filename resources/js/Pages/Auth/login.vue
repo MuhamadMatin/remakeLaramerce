@@ -38,10 +38,28 @@
     <div
       class="w-full max-w-md bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8"
     >
-      <form
-        @submit.prevent="submit"
-        class="space-y-4 sm:space-y-5"
+      <!-- Google -->
+      <a
+        href="oauth/google"
+        class="flex items-center justify-center gap-2 py-2.5 px-4 bg-white hover:bg-gray-50 active:bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 transition-colors shadow-2xs cursor-pointer"
       >
+        <Icon icon="logos:google-icon" class="w-4 h-4" />
+        <span>Google</span>
+      </a>
+
+      <!-- Divider -->
+      <div class="relative my-6 text-center">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+          <div class="w-full border-t border-gray-200"></div>
+        </div>
+        <span
+          class="relative bg-white px-3 text-xs text-gray-400 font-medium tracking-wide"
+        >
+          Or continue with
+        </span>
+      </div>
+
+      <form @submit.prevent="submit" class="space-y-4 sm:space-y-5">
         <!-- Username Field -->
         <div>
           <label
@@ -142,39 +160,6 @@
           </button>
         </div>
       </form>
-
-      <!-- Divider -->
-      <div class="relative my-6 text-center">
-        <div class="absolute inset-0 flex items-center" aria-hidden="true">
-          <div class="w-full border-t border-gray-200"></div>
-        </div>
-        <span
-          class="relative bg-white px-3 text-xs text-gray-400 font-medium tracking-wide"
-        >
-          Or continue with
-        </span>
-      </div>
-
-      <!-- Social Buttons -->
-      <div class="grid grid-cols-2 gap-3 sm:gap-4">
-        <!-- Google -->
-        <a
-          href="oauth/google"
-          class="flex items-center justify-center gap-2 py-2.5 px-4 bg-white hover:bg-gray-50 active:bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 transition-colors shadow-2xs cursor-pointer"
-        >
-          <Icon icon="logos:google-icon" class="w-4 h-4" />
-          <span>Google</span>
-        </a>
-
-        <!-- Facebook -->
-        <button
-          type="button"
-          class="flex items-center justify-center gap-2 py-2.5 px-4 bg-white hover:bg-gray-50 active:bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 transition-colors shadow-2xs cursor-pointer"
-        >
-          <Icon icon="logos:facebook" class="w-4 h-4" />
-          <span>Facebook</span>
-        </button>
-      </div>
     </div>
 
     <!-- Back to Home -->
