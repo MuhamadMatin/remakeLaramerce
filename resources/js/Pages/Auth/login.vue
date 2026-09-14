@@ -38,36 +38,32 @@
     <div
       class="w-full max-w-md bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8"
     >
-      <Form
-        action="/login/store"
-        method="post"
-        reset-on-success
+      <form
+        @submit.prevent="submit"
         class="space-y-4 sm:space-y-5"
-        #default="{ invalid, errors, processing }"
-        resetOnSuccess
-        disableWhileProcessing
       >
-        <!-- Email Field -->
+        <!-- Username Field -->
         <div>
           <label
-            for="email"
+            for="username"
             class="block text-sm font-semibold text-gray-700 mb-1.5"
           >
-            Email Address
+            Username
           </label>
           <div class="relative">
             <input
-              type="email"
-              name="email"
+              v-model="form.username"
+              type="username"
+              name="username"
               required
-              autocomplete="email"
+              autocomplete="username"
               placeholder="name@example.com"
               class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              :class="{ 'border-red-500': errors.email || invalid('email') }"
+              :class="{ 'border-red-500': form.errors.username }"
             />
           </div>
-          <p class="mt-1 text-red-500" v-if="errors.email || invalid('email')">
-            {{ errors.email }}
+          <p class="mt-1 text-xs text-red-500" v-if="form.errors.username">
+            {{ form.errors.username }}
           </p>
         </div>
 
@@ -81,13 +77,14 @@
           </label>
           <div class="relative">
             <input
+              v-model="form.password"
               :type="showPassword ? 'text' : 'password'"
               name="password"
               required
               autocomplete="current-password"
               placeholder="••••••••"
               class="w-full pl-3.5 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              :class="{ 'border-red-500': errors.password || invalid('password') }"
+              :class="{ 'border-red-500': form.errors.password }"
             />
             <button
               type="button"
@@ -103,8 +100,8 @@
               />
             </button>
           </div>
-          <p class="mt-1 text-red-500" v-if="errors.password || invalid('password')">
-            {{ errors.password }}
+          <p class="mt-1 text-xs text-red-500" v-if="form.errors.password">
+            {{ form.errors.password }}
           </p>
         </div>
 
@@ -112,6 +109,7 @@
         <div class="flex items-center justify-between pt-1">
           <label class="flex items-center gap-2 cursor-pointer select-none">
             <input
+              v-model="form.remember"
               type="checkbox"
               name="remember"
               class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
@@ -132,18 +130,18 @@
         <div class="pt-2">
           <button
             type="submit"
-            :disabled="processing"
+            :disabled="form.processing"
             class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 sm:py-3 px-4 rounded-lg text-sm sm:text-base transition-colors duration-150 shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Icon
-              v-if="processing"
-              icon="lucide:loader-2"
-              class="w-4 h-4 animate-spin"
+              v-if="form.processing"
+              icon="eos-icons:loading"
+              class="w-4 h-4"
             />
-            <p>{{ processing ? "Signing in..." : "Sign In" }}</p>
+            <p>{{ form.processing ? "Signing in..." : "Sign In" }}</p>
           </button>
         </div>
-      </Form>
+      </form>
 
       <!-- Divider -->
       <div class="relative my-6 text-center">
@@ -196,8 +194,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
-import { Link, Form, router } from "@inertiajs/vue3";
+import { Link, useForm } from "@inertiajs/vue3";
+
+const form = useForm({
+  username: "",
+  password: "",
+  remember: false,
+});
 
 const showPassword = ref(false);
-const processing = ref(false);
+
+// Submit
+function submit() {
+  form.post("/login/store");
+}
 </script>

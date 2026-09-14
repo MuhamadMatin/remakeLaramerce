@@ -25,7 +25,7 @@ class AuthController extends Controller
       $google = Socialite::driver('google')->user();
       $user   = User::where('provider_auth', 'google')->where('id_auth_user', $google->id)->first();
 
-      if (!$user) {
+      if (! $user) {
         $user = User::create([
           'id_user'       => strtotime(now()) . uniqid(),
           'name'          => $google->name,
@@ -63,7 +63,7 @@ class AuthController extends Controller
   public function storeLogin(Request $request)
   {
     $validators = Validator::make($request->all(), [
-      'email'    => 'required|email',
+      'username' => 'required',
       'password' => 'required',
       'remember' => 'sometimes',
     ]);
@@ -72,12 +72,12 @@ class AuthController extends Controller
       return redirect()->route('login')->withInput()->withErrors($validators);
     }
     try {
-      $user = User::where('email', $request->email)->first();
+      $user = User::where('username', $request->username)->first();
       if (!$user) {
-        return redirect()->route('login')->withErrors(['email' => 'Your email or account is not found.']);
+        return redirect()->route('login')->withErrors(['username' => 'Your username or account is not found.']);
       }
 
-      $credentials = $request->only('email', 'password');
+      $credentials = $request->only('username', 'password');
       $remember    = $request->boolean('remember');
 
       if (Auth::attempt($credentials, $remember)) {
@@ -85,9 +85,9 @@ class AuthController extends Controller
         return redirect()->route('dashboard.index');
       }
 
-      return redirect()->route('login')->withInput()->withErrors(['email' => 'Email or password incorrect.']);
+      return redirect()->route('login')->withInput()->withErrors(['username' => 'Username or password incorrect.']);
     } catch (Exception $e) {
-      return redirect()->route('login')->withInput()->withErrors(['email' => 'Email or password incorrect.']);
+      return redirect()->route('login')->withInput()->withErrors(['username' => 'Username or password incorrect.']);
     }
   }
 

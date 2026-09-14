@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-gray-900 flex flex-col justify-center items-center py-10 sm:py-16 px-4 sm:px-6 lg:px-8 font-sans"
+    class="min-h-screen bg-gray-50 flex flex-col justify-center items-center py-10 sm:py-16 px-4 sm:px-6 lg:px-8 font-sans"
   >
     <!-- Header Section -->
     <div class="text-center mb-6 sm:mb-8 w-full max-w-md">
@@ -27,7 +27,7 @@
           id="link-login"
           class="font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors ml-0.5"
         >
-          Sign in
+          Log in
         </Link>
       </p>
     </div>
@@ -36,14 +36,9 @@
     <div
       class="w-full max-w-md bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sm:p-8"
     >
-      <Form
-        action="/register/store"
-        method="post"
-        reset-on-success
+      <form
+        @submit.prevent="submit"
         class="space-y-4 sm:space-y-5"
-        #default="{ invalid, errors, processing }"
-        resetOnSuccess
-        disableWhileProcessing
       >
         <!-- Name Field -->
         <div>
@@ -55,43 +50,45 @@
           </label>
           <div class="relative">
             <input
+              id="name"
+              v-model="form.name"
               type="text"
               name="name"
               required
               autocomplete="name"
               placeholder="John Doe"
               class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              :class="{ 'border-red-500': errors.name ?? invalid('name') }"
+              :class="{ 'border-red-500': form.errors.name }"
             />
           </div>
-          <p class="mt-1 text-red-500" v-if="errors.name || invalid('name')">
-            {{ errors.name }}
+          <p class="mt-1 text-xs text-red-500" v-if="form.errors.name">
+            {{ form.errors.name }}
           </p>
         </div>
 
         <!-- Username Field -->
         <div>
           <label
-            for="name"
+            for="username"
             class="block text-sm font-semibold text-gray-700 mb-1.5"
           >
             Username
           </label>
           <div class="relative">
             <input
+              id="username"
+              v-model="form.username"
               type="text"
               name="username"
               required
-              autocomplete="name"
+              autocomplete="username"
               placeholder="John Doe"
               class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              :class="{
-                'border-red-500': errors.username ?? invalid('username'),
-              }"
+              :class="{ 'border-red-500': form.errors.username }"
             />
           </div>
-          <p class="mt-1 text-red-500" v-if="errors.username || invalid('username')">
-            {{ errors.username }}
+          <p class="mt-1 text-xs text-red-500" v-if="form.errors.username">
+            {{ form.errors.username }}
           </p>
         </div>
 
@@ -105,17 +102,19 @@
           </label>
           <div class="relative">
             <input
+              id="email"
+              v-model="form.email"
               type="email"
               name="email"
               required
               autocomplete="email"
               placeholder="name@example.com"
               class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              :class="{ 'border-red-500': errors.email ?? invalid('email') }"
+              :class="{ 'border-red-500': form.errors.email }"
             />
           </div>
-          <p class="mt-1 text-red-500" v-if="errors.email || invalid('email')">
-            {{ errors.email }}
+          <p class="mt-1 text-xs text-red-500" v-if="form.errors.email">
+            {{ form.errors.email }}
           </p>
         </div>
 
@@ -129,15 +128,15 @@
           </label>
           <div class="relative">
             <input
+              id="password"
+              v-model="form.password"
               :type="showPassword ? 'text' : 'password'"
               name="password"
               required
               autocomplete="new-password"
               placeholder="••••••••"
               class="w-full pl-3.5 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              :class="{
-                'border-red-500': errors.password ?? invalid('password'),
-              }"
+              :class="{ 'border-red-500': form.errors.password }"
             />
             <button
               type="button"
@@ -153,8 +152,8 @@
               />
             </button>
           </div>
-          <p class="mt-1 text-red-500" v-if="errors.password || invalid('password')">
-            {{ errors.password }}
+          <p class="mt-1 text-xs text-red-500" v-if="form.errors.password">
+            {{ form.errors.password }}
           </p>
         </div>
 
@@ -168,16 +167,15 @@
           </label>
           <div class="relative">
             <input
+              id="password_confirmation"
+              v-model="form.password_confirmation"
               :type="showConfirmPassword ? 'text' : 'password'"
               name="password_confirmation"
               required
               autocomplete="new-password"
               placeholder="••••••••"
               class="w-full pl-3.5 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              :class="{
-                'border-red-500':
-                  errors.password_confirmation ?? invalid('password_confirmation'),
-              }"
+              :class="{ 'border-red-500': form.errors.password_confirmation }"
             />
             <button
               type="button"
@@ -193,14 +191,16 @@
               />
             </button>
           </div>
-          <p class="mt-1 text-red-500" v-if="errors.password_confirmation || invalid('password_confirmation')">
-            {{ errors.password_confirmation }}
+          <p class="mt-1 text-xs text-red-500" v-if="form.errors.password_confirmation">
+            {{ form.errors.password_confirmation }}
           </p>
         </div>
 
         <!-- Terms and Privacy Agreement -->
         <div class="flex items-start gap-2.5 pt-1">
           <input
+            id="terms"
+            v-model="form.terms"
             type="checkbox"
             required
             class="w-4 h-4 mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer flex-shrink-0"
@@ -229,18 +229,18 @@
           <button
             type="submit"
             id="btn-submit-register"
-            :disabled="processing"
+            :disabled="form.processing"
             class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 sm:py-3 px-4 rounded-lg text-sm sm:text-base transition-colors duration-150 shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Icon
-              v-if="processing"
-              icon="lucide:loader-2"
-              class="w-4 h-4 animate-spin"
+              v-if="form.processing"
+              icon="eos-icons:loading"
+              class="w-4 h-4"
             />
-            <p>{{ processing ? "Creating account..." : "Create Account" }}</p>
+            <p>{{ form.processing ? "Creating account..." : "Create Account" }}</p>
           </button>
         </div>
-      </Form>
+      </form>
 
       <!-- Divider -->
       <div class="relative my-6 text-center">
@@ -269,7 +269,6 @@
         <button
           type="button"
           id="btn-facebook-register"
-          @click="registerWithProvider('Facebook')"
           class="flex items-center justify-center gap-2 py-2.5 px-4 bg-white hover:bg-gray-50 active:bg-gray-100 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 transition-colors shadow-2xs cursor-pointer"
         >
           <Icon icon="logos:facebook" class="w-4 h-4" />
@@ -295,12 +294,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Icon } from "@iconify/vue";
-import { Link, Form, router } from "@inertiajs/vue3";
-import Swal from "sweetalert2";
+import { Link, useForm } from "@inertiajs/vue3";
 
-// Form State
-const form = ref({
+const form = useForm({
   name: "",
+  username: "",
   email: "",
   password: "",
   password_confirmation: "",
@@ -310,20 +308,8 @@ const form = ref({
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
-// Methods
-function handleRegister() {
-  if (form.value.password !== form.value.password_confirmation) {
-    Swal.fire({
-      text: "Passwords do not match!",
-    });
-    return;
-  }
-
-  // router.post('/register', )
-
-  // console.log("Register submitted:", {
-  //   name: form.value.name,
-  //   email: form.value.email,
-  // });
+// Submit
+function submit() {
+  form.post("/register/store");
 }
 </script>
