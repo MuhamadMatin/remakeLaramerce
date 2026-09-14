@@ -25,20 +25,17 @@ class CategoryController extends Controller
       });
     }
 
-    // Date filter
     if ($request->date_from) {
       $query->whereDate('created_at', '>=', $request->date_from);
     }
+
     if ($request->date_to) {
       $query->whereDate('created_at', '<=', $request->date_to);
     }
 
-    // Sort
-    $sort      = $request->input('sort', 'name');
-    $direction = $request->input('direction', 'asc');
-    $query->orderBy($sort, $direction);
+    $query->orderBy($request->sort ?? 'name', $request->direction ?? 'asc');
 
-    $per_page   = (int) $request->input('per_page', 10);
+    $per_page   = $request->per_page ?? 10;
     $categories = $query->paginate($per_page)->withQueryString();
 
     return Inertia('Dashboard/Categories/index', [
