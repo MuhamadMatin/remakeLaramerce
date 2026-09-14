@@ -92,7 +92,7 @@ const sizeClasses: Record<string, string> = {
 const variantClasses: Record<string, string> = {
   primary: "bg-gray-900 hover:bg-gray-800 active:bg-black text-white shadow-xs",
   second:
-    "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-xs",
+    "bg-gray-900 hover:bg-gray-700 active:bg-black text-white shadow-xs",
   third:
     "bg-white hover:bg-gray-50 active:bg-gray-100 text-gray-700 border border-gray-300 shadow-xs",
 };

@@ -6,8 +6,8 @@
       >
         <!-- Logo -->
         <Link href="/" class="flex-shrink-0 flex items-center gap-2 order-1">
-          <Icon icon="lucide:store" class="w-8 h-8 text-blue-600" />
-          <p class="text-blue-600 font-bold text-lg sm:text-xl tracking-tight">
+          <Icon icon="lucide:store" class="w-8 h-8 text-gray-900" />
+          <p class="text-gray-900 font-bold text-lg sm:text-xl tracking-tight">
             Store
           </p>
         </Link>
@@ -17,7 +17,7 @@
             type="text"
             v-model="searchInput"
             placeholder="Search products..."
-            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-gray-50"
             @input="handleSearch"
           />
           <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -35,8 +35,8 @@
             class="text-sm font-medium transition-colors"
             :class="
               $page.url.startsWith('/login')
-                ? 'text-blue-600 font-semibold'
-                : 'text-gray-700 hover:text-blue-600'
+                ? 'text-gray-900 font-semibold'
+                : 'text-gray-700 hover:text-gray-900'
             "
           >
             <Icon :icon="!$page.props.auth.user ? 'carbon:login' : 'akar-icons:home-alt1'" class="w-6 h-6" />
@@ -48,8 +48,8 @@
             class="relative transition-colors inline-flex items-center justify-center p-1"
             :class="
               $page.url.startsWith('/cart')
-                ? 'text-blue-600 font-semibold'
-                : 'text-gray-700 hover:text-blue-600'
+                ? 'text-gray-900 font-semibold'
+                : 'text-gray-700 hover:text-gray-900'
             "
           >
             <Icon icon="lucide:shopping-cart" class="w-6 h-6" />

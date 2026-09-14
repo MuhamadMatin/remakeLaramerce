@@ -45,7 +45,7 @@
                     v-model="form.name"
                     type="text"
                     required
-                    class="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                    class="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-all"
                     :class="{ 'border-red-500': form.errors.name }"
                   />
                 </div>
@@ -65,7 +65,7 @@
                     v-model="form.slug"
                     type="text"
                     required
-                    class="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                    class="w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-all"
                     :class="{ 'border-red-500': form.errors.slug }"
                   />
                 </div>
@@ -87,7 +87,7 @@
                     name="description"
                     v-model="form.description"
                     type="text"
-                    class="resize-none w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all min-h-36"
+                    class="resize-none w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-all min-h-36"
                     :class="{ 'border-red-500': form.errors.description }"
                   />
                 </div>

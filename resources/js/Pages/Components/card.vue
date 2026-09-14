@@ -43,7 +43,7 @@
 
       <Link
         :href="`/products/${product.slug}`"
-        class="text-sm sm:text-base font-semibold text-blue-600 hover:text-blue-800 transition-colors leading-snug mb-2"
+        class="text-sm sm:text-base font-semibold text-gray-900 hover:text-gray-700 transition-colors leading-snug mb-2"
       >
         {{ product.name }}
       </Link>
@@ -79,7 +79,7 @@
         v-if="product.variants.length > 0"
         :id="`addToCart-${product.id_product}`"
         @click="$emit('addToCart', product)"
-        class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2 sm:py-2.5 rounded text-sm transition-colors duration-150 cursor-pointer"
+        class="w-full bg-gray-900 hover:bg-gray-700 active:bg-black text-white font-semibold py-2 sm:py-2.5 rounded text-sm transition-colors duration-150 cursor-pointer"
       >
         Add to Cart
       </button>

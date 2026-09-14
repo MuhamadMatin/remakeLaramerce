@@ -5,8 +5,8 @@
   >
     <!-- Logo -->
     <Link href="#" class="flex-shrink-0 flex items-center gap-2 order-1">
-      <Icon icon="lucide:store" class="w-8 h-8 text-blue-600" />
-      <p class="text-blue-600 font-bold text-lg sm:text-xl tracking-tight">
+      <Icon icon="lucide:store" class="w-8 h-8 text-gray-900" />
+      <p class="text-gray-900 font-bold text-lg sm:text-xl tracking-tight">
         Store
       </p>
     </Link>
@@ -40,8 +40,8 @@
     >
       <!-- Logo -->
       <Link href="#" class="flex-shrink-0 flex items-center gap-2 order-1">
-        <Icon icon="lucide:store" class="w-8 h-8 text-blue-600" />
-        <p class="text-blue-600 font-bold text-lg sm:text-xl tracking-tight">
+        <Icon icon="lucide:store" class="w-8 h-8 text-gray-900" />
+        <p class="text-gray-900 font-bold text-lg sm:text-xl tracking-tight">
           Store
         </p>
       </Link>
@@ -91,7 +91,7 @@
             class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors"
             :class="
               $page.url === item.href
-                ? 'bg-gray-100 text-blue-600'
+                ? 'bg-gray-100 text-gray-900 font-semibold'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             "
           >
@@ -99,7 +99,7 @@
               <Icon
                 :icon="item.icon"
                 class="w-5 h-5"
-                :class="item.isActive ? 'text-blue-600' : 'text-gray-400'"
+                :class="item.isActive ? 'text-gray-900' : 'text-gray-400'"
               />
               <span>{{ item.label }}</span>
             </div>
@@ -108,8 +108,8 @@
               class="text-xs font-semibold px-2 py-0.5 rounded-full"
               :class="
                 item.isActive
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-blue-50 text-blue-600'
+                  ? 'bg-gray-200 text-gray-900'
+                  : 'bg-gray-100 text-gray-700'
               "
             >
               {{ item.badge }}
@@ -126,7 +126,7 @@
         class="flex items-center gap-3 p-2 rounded-lg transition-colors group"
         :class="
           $page.url === '/dashboard/profile'
-            ? 'bg-gray-100 text-blue-600'
+            ? 'bg-gray-100 text-gray-900 font-semibold'
             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
         "
       >
@@ -148,7 +148,7 @@
 
         <div class="flex-1 min-w-0">
           <p
-            class="text-sm font-semibold text-gray-900 truncate group-hover:text-blue-600 transition-colors"
+            class="text-sm font-semibold text-gray-900 truncate group-hover:text-gray-700 transition-colors"
           >
             {{ authUser.name }}
           </p>

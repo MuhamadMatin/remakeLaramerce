@@ -11,9 +11,9 @@
       >
         <Icon
           icon="lucide:store"
-          class="w-8 h-8 text-blue-600 transition-transform"
+          class="w-8 h-8 text-gray-900 transition-transform"
         />
-        <p class="text-blue-600 font-bold text-2xl tracking-tight">Store</p>
+        <p class="text-gray-900 font-bold text-2xl tracking-tight">Store</p>
       </a>
 
       <!-- Title & Subtitle -->
@@ -24,8 +24,7 @@
         Already have an account?
         <Link
           href="/login"
-          id="link-login"
-          class="font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors ml-0.5"
+          class="font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors ml-0.5"
         >
           Log in
         </Link>
@@ -68,14 +67,13 @@
           </label>
           <div class="relative">
             <input
-              id="name"
               v-model="form.name"
               type="text"
               name="name"
               required
               autocomplete="name"
               placeholder="John Doe"
-              class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors"
               :class="{ 'border-red-500': form.errors.name }"
             />
           </div>
@@ -94,14 +92,13 @@
           </label>
           <div class="relative">
             <input
-              id="username"
               v-model="form.username"
               type="text"
               name="username"
               required
               autocomplete="username"
               placeholder="John Doe"
-              class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors"
               :class="{ 'border-red-500': form.errors.username }"
             />
           </div>
@@ -120,14 +117,13 @@
           </label>
           <div class="relative">
             <input
-              id="email"
               v-model="form.email"
               type="email"
               name="email"
               required
               autocomplete="email"
               placeholder="name@example.com"
-              class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors"
               :class="{ 'border-red-500': form.errors.email }"
             />
           </div>
@@ -146,19 +142,17 @@
           </label>
           <div class="relative">
             <input
-              id="password"
               v-model="form.password"
               :type="showPassword ? 'text' : 'password'"
               name="password"
               required
               autocomplete="new-password"
               placeholder="••••••••"
-              class="w-full pl-3.5 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              class="w-full pl-3.5 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors"
               :class="{ 'border-red-500': form.errors.password }"
             />
             <button
               type="button"
-              id="btn-toggle-password"
               @click="showPassword = !showPassword"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
               tabindex="-1"
@@ -185,19 +179,17 @@
           </label>
           <div class="relative">
             <input
-              id="password_confirmation"
               v-model="form.password_confirmation"
               :type="showConfirmPassword ? 'text' : 'password'"
               name="password_confirmation"
               required
               autocomplete="new-password"
               placeholder="••••••••"
-              class="w-full pl-3.5 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              class="w-full pl-3.5 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors"
               :class="{ 'border-red-500': form.errors.password_confirmation }"
             />
             <button
               type="button"
-              id="btn-toggle-confirm-password"
               @click="showConfirmPassword = !showConfirmPassword"
               class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
               tabindex="-1"
@@ -220,11 +212,10 @@
         <!-- Terms and Privacy Agreement -->
         <div class="flex items-start gap-2.5 pt-1">
           <input
-            id="terms"
             v-model="form.terms"
             type="checkbox"
             required
-            class="w-4 h-4 mt-0.5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer flex-shrink-0"
+            class="w-4 h-4 mt-0.5 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer flex-shrink-0"
           />
           <label
             for="terms"
@@ -233,13 +224,13 @@
             I agree to the
             <Link
               href="/terms"
-              class="text-blue-600 hover:text-blue-700 hover:underline"
+              class="text-gray-900 hover:text-gray-700 hover:underline"
               >Terms of Service</Link
             >
             and
             <Link
               href="/privacy"
-              class="text-blue-600 hover:text-blue-700 hover:underline"
+              class="text-gray-900 hover:text-gray-700 hover:underline"
               >Privacy Policy</Link
             >.
           </label>
@@ -249,9 +240,8 @@
         <div class="pt-2">
           <button
             type="submit"
-            id="btn-submit-register"
             :disabled="form.processing"
-            class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 sm:py-3 px-4 rounded-lg text-sm sm:text-base transition-colors duration-150 shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            class="w-full bg-gray-900 hover:bg-gray-700 active:bg-black text-white font-semibold py-2.5 sm:py-3 px-4 rounded-lg text-sm sm:text-base transition-colors duration-150 shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Icon
               v-if="form.processing"
@@ -270,8 +260,7 @@
     <div class="mt-6 text-center">
       <Link
         href="/"
-        id="link-back-home"
-        class="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+        class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors"
       >
         <p>&larr;</p>
         <p>Back to Home</p>

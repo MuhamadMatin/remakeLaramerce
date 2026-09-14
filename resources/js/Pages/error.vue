@@ -4,7 +4,7 @@
   <div class="bg-gray-100 text-center">
     <div class="flex flex-col justify-center items-center h-full">
       <!-- Status -->
-      <h1 class="text-8xl font-extrabold text-blue-400">
+      <h1 class="text-8xl font-extrabold text-gray-900">
         {{ props.status }}
       </h1>
 
@@ -18,7 +18,7 @@
 
       <Link
         href="/"
-        class="mt-4 inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+        class="mt-4 inline-flex items-center gap-1.5 text-sm md:text-base font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors"
       >
         <p>&larr;</p>
         <p>Back to Home</p>

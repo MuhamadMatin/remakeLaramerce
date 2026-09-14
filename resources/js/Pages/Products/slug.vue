@@ -53,7 +53,7 @@
                 class="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 transition-all cursor-pointer"
                 :class="
                   selectedImage === img.image_path
-                    ? 'border-2 border-blue-600 shadow-sm'
+                    ? 'border-2 border-gray-900 shadow-sm'
                     : 'border border-gray-200 hover:border-gray-300 opacity-75 hover:opacity-100'
                 "
               >
@@ -104,7 +104,7 @@
                   :class="
                     selectedVariant?.id_product_variant ===
                     variant.id_product_variant
-                      ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
+                      ? 'bg-gray-900 text-white border-gray-900 shadow-xs'
                       : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
                   "
                 >
@@ -172,7 +172,7 @@
                 id="btn-add-to-cart"
                 @click="addToCart"
                 :disabled="!inStock"
-                class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-150 flex items-center justify-center gap-2 shadow-sm disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none cursor-pointer"
+                class="w-full bg-gray-900 hover:bg-gray-700 active:bg-black text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-150 flex items-center justify-center gap-2 shadow-sm disabled:bg-gray-300 disabled:cursor-not-allowed disabled:shadow-none cursor-pointer"
               >
                 <Icon icon="lucide:shopping-cart" class="w-5 h-5" />
                 <p>{{ inStock ? "Add Cart" : "Out of Stock" }}</p>
@@ -186,13 +186,13 @@
               </div>
               <div class="flex items-center justify-between text-sm">
                 <p class="text-gray-500 font-medium">Category:</p>
-                <p class="font-medium text-blue-600">
+                <p class="font-medium text-gray-900">
                   {{ product.category.name }}
                 </p>
               </div>
               <div class="flex items-center justify-between text-sm">
                 <p class="text-gray-500 font-medium">Store:</p>
-                <p class="font-medium text-blue-600">
+                <p class="font-medium text-gray-900">
                   {{ product.store.name }}
                 </p>
               </div>
@@ -217,7 +217,7 @@
               class="py-4 text-sm sm:text-base font-semibold transition-colors cursor-pointer border-b-2 -mb-px"
               :class="
                 activeTab === 'description'
-                  ? 'border-blue-600 text-blue-600'
+                  ? 'border-gray-900 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               "
             >
@@ -230,7 +230,7 @@
               class="py-4 text-sm sm:text-base font-semibold transition-colors cursor-pointer border-b-2 -mb-px"
               :class="
                 activeTab === 'reviews'
-                  ? 'border-blue-600 text-blue-600'
+                  ? 'border-gray-900 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               "
             >

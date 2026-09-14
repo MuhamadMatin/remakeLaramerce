@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-xl border border-gray-200 bg-white shadow-xs">
+  <div class="w-full min-w-0 max-w-full rounded-xl border border-gray-200 bg-white shadow-xs overflow-hidden">
     <!-- Toolbar -->
     <div
       class="flex flex-col gap-3 p-3.5 md:flex-row md:items-center md:justify-between md:p-4 lg:p-5"
@@ -18,7 +18,7 @@
             @click="activePanel = activePanel === 'bulkActions' ? null : 'bulkActions'"
           >
             <Icon icon="lucide:ellipsis-vertical" class="h-3.5 w-3.5 text-gray-400" />
-            <span>Bulk actions</span>
+            <p>Bulk actions</p>
           </button>
 
           <!-- Bulk actions popup -->
@@ -33,7 +33,7 @@
               @click="handleBulkDeleteAndClose"
             >
               <Icon icon="lucide:trash-2" class="h-4 w-4" />
-              <span>Delete selected</span>
+              <p>Delete selected</p>
             </button>
             <slot name="bulk-actions" :selected="selectedRowKeys" />
           </div>
@@ -71,9 +71,9 @@
       </div>
 
       <!-- Right controls -->
-      <div class="flex flex-wrap items-center gap-2">
+      <div class="flex items-center gap-2 w-full md:w-auto">
         <!-- Search -->
-        <div class="relative w-full md:w-56 lg:w-64">
+        <div class="relative flex-1 min-w-0 md:w-56 md:flex-initial lg:w-64">
           <Icon
             icon="lucide:search"
             class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
@@ -82,24 +82,24 @@
             :value="form.search"
             type="text"
             placeholder="Search"
-            class="w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-9 pr-3 text-xs text-gray-800 placeholder-gray-400 shadow-xs transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 md:text-sm"
+            class="w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-9 pr-3 text-xs text-gray-800 placeholder-gray-400 shadow-xs transition focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-700 md:text-sm"
             @input="onSearch($event.target.value)"
           />
         </div>
 
         <!-- Filter dropdown -->
-        <div ref="filtersWrapperRef" class="relative">
+        <div ref="filtersWrapperRef" class="relative shrink-0">
           <button
             type="button"
             class="relative inline-flex items-center justify-center rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800 cursor-pointer"
-            :class="activeFilterCount > 0 ? 'text-blue-600' : ''"
+            :class="activeFilterCount > 0 ? 'text-gray-900' : ''"
             @click="activePanel = activePanel === 'filters' ? null : 'filters'"
             title="Filter"
           >
             <Icon icon="lucide:filter" class="h-4 w-4" />
             <span
               v-if="activeFilterCount > 0"
-              class="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[10px] font-bold leading-none text-white"
+              class="absolute -top-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gray-900 px-1 text-[10px] font-bold leading-none text-white"
             >
               {{ activeFilterCount }}
             </span>
@@ -136,7 +136,7 @@
                     <input
                       v-model="form.date_from"
                       type="date"
-                      class="block w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-700 shadow-xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:text-sm"
+                      class="block w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-700 shadow-xs focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 md:text-sm"
                     />
                   </div>
                   <div>
@@ -147,7 +147,7 @@
                     <input
                       v-model="form.date_to"
                       type="date"
-                      class="block w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-700 shadow-xs focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:text-sm"
+                      class="block w-full rounded-lg border border-gray-300 bg-white px-2.5 py-1.5 text-xs text-gray-700 shadow-xs focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900 md:text-sm"
                     />
                   </div>
                 </div>
@@ -159,7 +159,7 @@
             >
               <button
                 type="button"
-                class="text-xs font-medium text-gray-400 hover:text-gray-600 cursor-pointer"
+                class="text-xs font-medium text-red-400 hover:text-red-600 cursor-pointer"
                 @click="resetFilters"
               >
                 Reset
@@ -169,14 +169,14 @@
                 class="rounded-lg bg-gray-900 px-3 py-1.5 text-xs font-semibold text-white shadow-xs transition hover:bg-gray-700 cursor-pointer"
                 @click="applyFilters"
               >
-                Apply filters
+                Apply
               </button>
             </div>
           </div>
         </div>
 
         <!-- Columns toggle button -->
-        <div ref="columnsWrapperRef" class="relative">
+        <div ref="columnsWrapperRef" class="relative shrink-0">
           <button
             type="button"
             class="inline-flex items-center justify-center rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800 cursor-pointer"
@@ -205,7 +205,7 @@
                 v-model="visibleKeys"
                 type="checkbox"
                 :value="columnItem.key"
-                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                class="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
               />
               {{ columnItem.label }}
             </label>
@@ -214,7 +214,7 @@
             >
               <button
                 type="button"
-                class="text-xs font-medium text-gray-400 hover:text-gray-600"
+                class="text-xs font-medium text-red-400 hover:text-red-600 cursor-pointer"
                 @click="resetColumns"
               >
                 Reset
@@ -247,7 +247,7 @@
       <div class="flex items-center gap-4">
         <button
           type="button"
-          class="font-medium text-blue-600 transition hover:text-blue-700 cursor-pointer md:text-sm"
+          class="font-medium text-gray-900 transition hover:text-gray-700 cursor-pointer md:text-sm"
           @click="selectAllRows"
         >
           Select all {{ totalRows }}
@@ -269,11 +269,11 @@
         v-if="isLoading"
         class="absolute inset-0 z-20 flex items-center justify-center bg-white/60 backdrop-blur-[1px]"
       >
-        <Icon icon="eos-icons:loading" class="h-8 w-8 text-blue-600" />
+        <Icon icon="eos-icons:loading" class="h-8 w-8 text-gray-900" />
       </div>
 
       <div
-        class="overflow-x-auto datatable-scrollbar"
+        class="w-full min-w-0 overflow-x-auto"
         :class="{ 'pointer-events-none opacity-50': isLoading }"
       >
         <table class="min-w-full text-left text-xs md:text-sm">
@@ -287,11 +287,20 @@
               >
                 <input
                   type="checkbox"
-                  class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-0 focus:outline-none"
+                  class="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-0 focus:outline-none"
                   :checked="allSelected"
                   :indeterminate="someSelected && !allSelected"
                   @change="toggleAll"
                 />
+              </th>
+
+              <!-- Row number th -->
+              <th
+                v-if="showRowNumber"
+                scope="col"
+                class="w-12 px-3 py-3 text-left font-semibold text-gray-800 md:px-4 md:py-3.5 lg:px-6"
+              >
+                No
               </th>
 
               <!-- Dynamic columns th -->
@@ -312,12 +321,12 @@
                   <Icon
                     v-if="sortKey === columnItem.key && sortDir === 'asc'"
                     icon="lucide:chevron-up"
-                    class="h-3.5 w-3.5 text-blue-600"
+                    class="h-3.5 w-3.5 text-gray-900"
                   />
                   <Icon
                     v-else-if="sortKey === columnItem.key"
                     icon="lucide:chevron-down"
-                    class="h-3.5 w-3.5 text-blue-600"
+                    class="h-3.5 w-3.5 text-gray-900"
                   />
                   <Icon
                     v-else
@@ -332,7 +341,7 @@
               <th
                 v-if="showActions"
                 scope="col"
-                class="w-16 px-3 py-3 text-right font-semibold text-gray-800 md:w-20 md:px-4 md:py-3.5 lg:px-6"
+                class="sticky right-0 z-10 w-14 bg-white px-3 py-3 text-right font-semibold text-gray-800 shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.06)] md:w-20 md:px-4 md:py-3.5 lg:px-6"
               >
                 <span class="sr-only">Actions</span>
               </th>
@@ -343,7 +352,12 @@
             <!-- Empty state -->
             <tr v-if="rows.length === 0">
               <td
-                :colspan="visibleColumns.length + (checkable ? 1 : 0) + (showActions ? 1 : 0)"
+                :colspan="
+                  visibleColumns.length +
+                  (checkable ? 1 : 0) +
+                  (showRowNumber ? 1 : 0) +
+                  (showActions ? 1 : 0)
+                "
                 class="px-4 py-16 text-center text-xs text-gray-400 md:text-sm lg:px-6"
               >
                 Tidak ada data yang cocok dengan filter / pencarian.
@@ -352,10 +366,10 @@
 
             <!-- Data rows -->
             <tr
-              v-for="rowItem in rows"
+              v-for="(rowItem, rowIndex) in rows"
               :key="rowItem[rowKey]"
-              class="transition-colors hover:bg-gray-50/70"
-              :class="isRowSelected(rowItem) ? 'bg-blue-50/40' : ''"
+              class="group transition-colors hover:bg-gray-50/70"
+              :class="isRowSelected(rowItem) ? 'bg-gray-50' : ''"
             >
               <!-- Checkbox td -->
               <td
@@ -366,34 +380,52 @@
                   v-model="selectedRowKeys"
                   type="checkbox"
                   :value="rowItem[rowKey]"
-                  class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-0 focus:outline-none"
+                  class="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-0 focus:outline-none"
                 />
               </td>
 
-              <!-- Columns td -->
+              <!-- Row number td -->
+              <td
+                v-if="showRowNumber"
+                class="px-3 py-3 text-gray-500 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+              >
+                {{ rowNumber(rowIndex) }}
+              </td>
+
+              <!-- Columns td: auto-loop, nilai diambil dari columnItem.data (fallback: columnItem.label) -->
               <td
                 v-for="(columnItem, columnIndex) in visibleColumns"
                 :key="columnItem.key"
-                class="whitespace-nowrap px-3 py-3 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                class="px-3 py-3 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
                 :class="[
                   columnItem.align === 'right' ? 'text-right' : 'text-left',
-                  columnIndex === 0 ? 'font-medium text-gray-900' : 'text-gray-600'
+                  columnIndex === 0 ? 'font-medium text-gray-900 whitespace-nowrap' : 'text-gray-600',
+                  columnItem.key === 'description' || columnItem.key === 'deskripsi' || columnItem.key === 'desc'
+                    ? 'min-w-[160px] max-w-xs md:max-w-md lg:max-w-lg truncate'
+                    : 'whitespace-nowrap'
                 ]"
+                :title="
+                  columnItem.key === 'description' || columnItem.key === 'deskripsi' || columnItem.key === 'desc'
+                    ? formatCell(getCellValue(rowItem, columnItem))
+                    : undefined
+                "
               >
                 <slot
                   :name="`cell-${columnItem.key}`"
                   :row="rowItem"
-                  :value="rowItem[columnItem.key]"
+                  :value="getCellValue(rowItem, columnItem)"
                   :column="columnItem"
+                  :index="rowIndex"
                 >
-                  {{ formatCell(rowItem[columnItem.key]) }}
+                  {{ formatCell(getCellValue(rowItem, columnItem)) }}
                 </slot>
               </td>
 
               <!-- Actions td -->
               <td
                 v-if="showActions"
-                class="whitespace-nowrap px-3 py-3 text-right md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                class="sticky right-0 z-10 whitespace-nowrap px-3 py-3 text-right transition-colors shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.06)] md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                :class="isRowSelected(rowItem) ? 'bg-gray-50' : 'bg-white group-hover:bg-gray-50/70'"
               >
                 <!-- Mobile: Kebab dropdown -->
                 <div class="relative inline-block text-left md:hidden">
@@ -416,10 +448,27 @@
                   >
                     <div
                       v-show="openActionRowId === rowItem[rowKey]"
-                      class="action-dropdown absolute right-0 z-30 mt-1 w-44 origin-top-right rounded-xl bg-gray-900 py-1.5 shadow-2xl ring-1 ring-white/10"
+                      class="absolute right-0 z-30 mt-1 w-44 origin-top-right rounded-xl bg-gray-900 p-1.5 shadow-2xl ring-1 ring-white/10"
                     >
+                      <!-- Mobile actions (default: Edit + Delete, overridable) -->
                       <slot name="row-actions-mobile" :row="rowItem">
-                        <slot name="row-actions" :row="rowItem" />
+                        <Link
+                          v-if="resolveEditHref(rowItem)"
+                          :href="resolveEditHref(rowItem)"
+                          class="flex w-full items-center gap-2.5 px-3.5 py-2 text-sm text-green-400 whitespace-nowrap transition-colors hover:bg-green-400/10 cursor-pointer"
+                        >
+                          <Icon icon="lucide:pencil" class="h-4 w-4" />
+                          Edit
+                        </Link>
+                        <button
+                          v-if="resolveDeleteRoute(rowItem)"
+                          type="button"
+                          class="flex w-full items-center gap-2.5 px-3.5 py-2 text-sm text-red-400 whitespace-nowrap transition-colors hover:bg-red-400/10 cursor-pointer"
+                          @click="destroyRow(rowItem)"
+                        >
+                          <Icon icon="lucide:trash-2" class="h-4 w-4" />
+                          Delete
+                        </button>
                       </slot>
                     </div>
                   </transition>
@@ -427,7 +476,26 @@
 
                 <!-- Tablet (md) & Desktop (lg): Inline actions -->
                 <div class="hidden items-center justify-end gap-1 md:flex">
-                  <slot name="row-actions" :row="rowItem" />
+                  <!-- Desktop actions (default: Edit + Delete, overridable) -->
+                  <slot name="row-actions" :row="rowItem">
+                    <Link
+                      v-if="resolveEditHref(rowItem)"
+                      :href="resolveEditHref(rowItem)"
+                      class="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-700"
+                      title="Edit"
+                    >
+                      <Icon icon="lucide:pencil" class="h-4 w-4" />
+                    </Link>
+                    <button
+                      v-if="resolveDeleteRoute(rowItem)"
+                      type="button"
+                      class="rounded-lg p-2 text-red-400 transition hover:bg-red-50 hover:text-red-600 cursor-pointer"
+                      title="Delete"
+                      @click="destroyRow(rowItem)"
+                    >
+                      <Icon icon="lucide:trash-2" class="h-4 w-4" />
+                    </button>
+                  </slot>
                 </div>
               </td>
             </tr>
@@ -441,16 +509,16 @@
       class="flex flex-col gap-3 border-t border-gray-200 px-3.5 py-3 md:flex-row md:items-center md:justify-between md:px-4 md:py-3.5 lg:px-6 lg:py-4"
     >
       <!-- Result counts -->
-      <p class="text-xs text-gray-500 md:text-sm">
+      <span class="text-xs text-gray-500 md:text-sm">
         Showing
-        <span class="font-medium text-gray-700">{{ from }}</span> to
-        <span class="font-medium text-gray-700">{{ to }}</span> of
-        <span class="font-medium text-gray-700">{{ totalRows }}</span> results
-      </p>
+        <p class="font-medium text-gray-700">{{ from }}</p> to
+        <p class="font-medium text-gray-700">{{ to }}</p> of
+        <p class="font-medium text-gray-700">{{ totalRows }}</p> results
+      </span>
 
       <!-- Controls -->
       <div
-        class="flex flex-wrap items-center justify-between gap-3 md:justify-end md:gap-4"
+        class="flex items-center justify-between gap-3 w-full md:w-auto md:justify-end md:gap-4"
       >
         <!-- Per page -->
         <div
@@ -476,7 +544,7 @@
 
         <!-- Segmented pagination buttons -->
         <nav
-          class="inline-flex items-center divide-x divide-gray-200 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xs"
+          class="inline-flex items-center divide-x divide-gray-200 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-xs shrink-0"
           aria-label="Pagination"
         >
           <!-- Prev -->
@@ -508,7 +576,7 @@
               class="flex h-8 min-w-8 items-center justify-center px-2.5 text-xs font-medium transition cursor-pointer md:h-9 md:min-w-9 md:px-3 md:text-sm"
               :class="
                 pageItem === currentPage
-                  ? 'bg-blue-50/80 font-semibold text-blue-600'
+                  ? 'bg-gray-900 font-semibold text-white shadow-xs'
                   : 'text-gray-700 hover:bg-gray-50'
               "
             >
@@ -534,9 +602,10 @@
 
 <script setup>
 import { ref, reactive, computed, watch, onMounted, onUnmounted } from "vue";
-import { router } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import Swal from "sweetalert2";
+import debounce from "../../debounce.js";
 
 // Props
 const props = defineProps({
@@ -556,6 +625,9 @@ const props = defineProps({
   showActions: { type: Boolean, default: true },
   showGroupBy: { type: Boolean, default: true },
   groupByOptions: { type: Array, default: () => [] },
+  showRowNumber: { type: Boolean, default: false },
+  editRoute: { type: [String, Function], default: null },
+  deleteRoute: { type: [String, Function], default: null },
 });
 
 const emit = defineEmits(["selection-change", "bulk-delete", "group-by-change"]);
@@ -563,13 +635,31 @@ const emit = defineEmits(["selection-change", "bulk-delete", "group-by-change"])
 // State
 const reservedFilterKeys = ["page", "per_page", "sort", "direction"];
 
+const normalizedInitialFilters =
+  props.filters && !Array.isArray(props.filters) && typeof props.filters === "object"
+    ? props.filters
+    : {};
+
 const form = reactive({
-  search: "",
-  date_from: "",
-  date_to: "",
+  search:
+    typeof normalizedInitialFilters.search === "string"
+      ? normalizedInitialFilters.search
+      : "",
+  date_from:
+    typeof normalizedInitialFilters.date_from === "string"
+      ? normalizedInitialFilters.date_from
+      : "",
+  date_to:
+    typeof normalizedInitialFilters.date_to === "string"
+      ? normalizedInitialFilters.date_to
+      : "",
   ...Object.fromEntries(
-    Object.entries(props.filters || {})
-      .filter(([filterKey]) => !reservedFilterKeys.includes(filterKey))
+    Object.entries(normalizedInitialFilters)
+      .filter(
+        ([filterKey, filterValue]) =>
+          !reservedFilterKeys.includes(filterKey) &&
+          typeof filterValue !== "function",
+      )
       .map(([filterKey, filterValue]) => [filterKey, filterValue ?? ""]),
   ),
 });
@@ -582,8 +672,24 @@ const filtersWrapperRef = ref(null);
 const bulkActionsWrapperRef = ref(null);
 const openActionRowId = ref(null);
 
+// Safe filters
+const safeFilters = computed(() => {
+  if (
+    !props.filters ||
+    Array.isArray(props.filters) ||
+    typeof props.filters !== "object"
+  ) {
+    return {};
+  }
+  return props.filters;
+});
+
 // Group by
-const selectedGroupBy = ref(props.filters?.group_by || "");
+const selectedGroupBy = ref(
+  typeof normalizedInitialFilters.group_by === "string"
+    ? normalizedInitialFilters.group_by
+    : "",
+);
 
 const groupableColumns = computed(() => {
   if (props.groupByOptions && props.groupByOptions.length > 0) {
@@ -602,6 +708,54 @@ function onGroupByChange(changeEvent) {
 function toggleActionMenu(rowItem) {
   const rowIdentifier = rowItem[props.rowKey];
   openActionRowId.value = openActionRowId.value === rowIdentifier ? null : rowIdentifier;
+}
+
+// Default row actions (edit/delete)
+function resolveEditHref(rowItem) {
+  if (typeof props.editRoute === "function") return props.editRoute(rowItem);
+  if (typeof props.editRoute === "string" && props.editRoute) {
+    return props.editRoute.replace(":id", rowItem[props.rowKey]);
+  }
+  return null;
+}
+
+function resolveDeleteRoute(rowItem) {
+  if (typeof props.deleteRoute === "function") return props.deleteRoute(rowItem);
+  return props.deleteRoute || null;
+}
+
+function destroyRow(rowItem) {
+  const targetRoute = resolveDeleteRoute(rowItem);
+  if (!targetRoute) return;
+
+  Swal.fire({
+    title: "Konfirmasi Hapus",
+    text: "Hapus data ini? Aksi ini tidak bisa dibatalkan.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Ya, hapus",
+    cancelButtonText: "Batal",
+  }).then((confirmResult) => {
+    if (!confirmResult.isConfirmed) return;
+    router.delete(targetRoute, {
+      data: { id: rowItem[props.rowKey] },
+      preserveScroll: true,
+      onSuccess: () => {
+        selectedRowKeys.value = selectedRowKeys.value.filter(
+          (rowIdentifier) => rowIdentifier !== rowItem[props.rowKey],
+        );
+        Swal.fire({
+          title: "Berhasil!",
+          text: "Data berhasil dihapus.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      },
+    });
+  });
 }
 
 // Pagination meta
@@ -625,6 +779,11 @@ const to = computed(
   () =>
     paginationMeta.value.to ?? Math.min(currentPage.value * perPage.value, totalRows.value),
 );
+
+// Nomor urut baris, mengikuti posisi halaman saat ini
+function rowNumber(rowIndex) {
+  return (currentPage.value - 1) * perPage.value + rowIndex + 1;
+}
 
 // Pagination items
 const pageItems = computed(() => {
@@ -654,8 +813,24 @@ const pageItems = computed(() => {
 });
 
 // Sorting
-const sortKey = computed(() => props.filters?.sort ?? null);
-const sortDir = computed(() => props.filters?.direction ?? "asc");
+const sortKey = computed(() => {
+  const currentSort = safeFilters.value?.sort;
+  if (typeof currentSort === "string" && currentSort.trim() !== "") {
+    return currentSort.trim();
+  }
+  return null;
+});
+
+const sortDir = computed(() => {
+  const currentDirection = safeFilters.value?.direction;
+  if (typeof currentDirection === "string") {
+    const normalizedDirection = currentDirection.toLowerCase().trim();
+    if (normalizedDirection === "desc" || normalizedDirection === "asc") {
+      return normalizedDirection;
+    }
+  }
+  return "asc";
+});
 
 function sortBy(columnKey) {
   const targetColumn = props.columns.find((columnItem) => columnItem.key === columnKey);
@@ -676,7 +851,11 @@ function updateQuery(overrides = {}, { replace = false } = {}) {
   };
   const filteredParams = Object.fromEntries(
     Object.entries(queryPayload).filter(
-      ([, paramValue]) => paramValue !== "" && paramValue !== null && paramValue !== undefined,
+      ([, paramValue]) =>
+        paramValue !== "" &&
+        paramValue !== null &&
+        paramValue !== undefined &&
+        typeof paramValue !== "function",
     ),
   );
 
@@ -687,15 +866,34 @@ function updateQuery(overrides = {}, { replace = false } = {}) {
   });
 }
 
+// Sync safeFilters
+watch(
+  safeFilters,
+  (newFilters) => {
+    if (typeof newFilters.search === "string" && newFilters.search !== form.search) {
+      form.search = newFilters.search;
+    }
+    if (typeof newFilters.date_from === "string" && newFilters.date_from !== form.date_from) {
+      form.date_from = newFilters.date_from;
+    }
+    if (typeof newFilters.date_to === "string" && newFilters.date_to !== form.date_to) {
+      form.date_to = newFilters.date_to;
+    }
+    if (typeof newFilters.group_by === "string") {
+      selectedGroupBy.value = newFilters.group_by;
+    }
+  },
+  { deep: true },
+);
+
 // Search
-let searchTimer = null;
+const debouncedSearch = debounce(() => {
+  updateQuery({ page: 1 }, { replace: true });
+}, 400);
+
 function onSearch(searchValue) {
   form.search = searchValue;
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(
-    () => updateQuery({ page: 1 }, { replace: true }),
-    400,
-  );
+  debouncedSearch();
 }
 
 // Filters
@@ -858,10 +1056,27 @@ function changePerPage(changeEvent) {
   updateQuery({ page: 1, per_page: Number(changeEvent.target.value) });
 }
 
-// Helper
+function resolveDataPath(columnItem) {
+  if (typeof columnItem.data === "string" && columnItem.data.trim() !== "") {
+    return columnItem.data;
+  }
+  return columnItem.label;
+}
+
+function getCellValue(rowItem, columnItem) {
+  const dataPath = resolveDataPath(columnItem);
+  if (!dataPath || typeof dataPath !== "string") return undefined;
+  if (!dataPath.includes(".")) return rowItem?.[dataPath];
+  return dataPath
+    .split(".")
+    .reduce((accumulator, keySegment) => (accumulator == null ? accumulator : accumulator[keySegment]), rowItem);
+}
+
+// Helper: format nilai cell untuk ditampilkan
 function formatCell(cellValue) {
   if (cellValue === null || cellValue === undefined || cellValue === "") return "—";
   if (typeof cellValue === "boolean") return cellValue ? "Yes" : "No";
+  if (Array.isArray(cellValue)) return cellValue.length ? cellValue.join(", ") : "—";
   return cellValue;
 }
 
@@ -916,57 +1131,3 @@ onUnmounted(() => {
   offFinish();
 });
 </script>
-
-<style scoped>
-/* Mobile action dropdown */
-.action-dropdown :deep(> *) {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.5rem 0.875rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: #d1d5db;
-  border-radius: 0.375rem;
-  transition: background-color 150ms;
-  white-space: nowrap;
-  cursor: pointer;
-}
-.action-dropdown :deep(> *:hover) {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-.action-dropdown :deep(> .action-edit) {
-  color: #4ade80;
-}
-.action-dropdown :deep(> .action-edit:hover) {
-  background-color: rgba(74, 222, 128, 0.1);
-}
-.action-dropdown :deep(> .action-delete),
-.action-dropdown :deep(> .text-red-600),
-.action-dropdown :deep(> .text-red-500),
-.action-dropdown :deep(> [class*="red"]) {
-  color: #f87171;
-}
-.action-dropdown :deep(> .action-delete:hover),
-.action-dropdown :deep(> .text-red-600:hover),
-.action-dropdown :deep(> .text-red-500:hover),
-.action-dropdown :deep(> [class*="red"]:hover) {
-  background-color: rgba(248, 113, 113, 0.1);
-}
-
-/* Scrollbar */
-.datatable-scrollbar::-webkit-scrollbar {
-  height: 6px;
-}
-.datatable-scrollbar::-webkit-scrollbar-track {
-  background: #f8fafc;
-}
-.datatable-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 9999px;
-}
-.datatable-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-</style>

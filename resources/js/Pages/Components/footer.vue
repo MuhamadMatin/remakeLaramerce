@@ -9,12 +9,12 @@
         <div class="flex-shrink-0 w-full lg:w-72 xl:w-80 mb-12 lg:mb-0">
           <!-- Logo icon -->
           <div class="mb-4">
-            <Icon icon="lucide:store" class="w-10 h-10 text-blue-600" />
+            <Icon icon="lucide:store" class="w-10 h-10 text-gray-900" />
           </div>
 
           <!-- Tagline -->
           <p
-            class="text-blue-600 font-semibold text-base sm:text-lg leading-snug mb-6 max-w-xs"
+            class="text-gray-900 font-semibold text-base sm:text-lg leading-snug mb-6 max-w-xs"
           >
             E-Commerce Store is the most productive way to shop for amazing
             products at unbeatable prices.
@@ -32,13 +32,13 @@
                 id="footer-first-name"
                 type="text"
                 placeholder="First name"
-                class="flex-1 min-w-0 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="flex-1 min-w-0 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
               <input
                 id="footer-last-name"
                 type="text"
                 placeholder="Last name"
-                class="flex-1 min-w-0 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="flex-1 min-w-0 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
               />
             </div>
             <!-- Email -->
@@ -47,7 +47,7 @@
               type="email"
               v-model="newsletterEmail"
               placeholder="Email address"
-              class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-2"
+              class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent mb-2"
             />
             <!-- Submit -->
             <button
@@ -202,7 +202,7 @@
       aria-hidden="true"
     >
       <p
-        class="text-blue-600 text-center font-black leading-none text-8xl sm:text-9xl leading-none tracking-tighter whitespace-nowrap"
+        class="text-gray-900 text-center font-black leading-none text-8xl sm:text-9xl leading-none tracking-tighter whitespace-nowrap"
       >
         Store
       </p>

@@ -22,7 +22,7 @@
           </h1>
           <button
             type="button"
-            class="w-full md:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-xs transition-colors cursor-pointer"
+            class="w-full md:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-700 active:bg-black text-white text-sm font-medium rounded-lg shadow-xs transition-colors cursor-pointer"
           >
             <span>New order</span>
           </button>
@@ -250,7 +250,7 @@ const groupByOptions = [
 // Status tabs
 const statusTabs = ref([
   { key: 'all', label: 'All', count: 1019, badgeClass: 'bg-gray-200 text-gray-700' },
-  { key: 'New', label: 'New', count: 155, badgeClass: 'bg-blue-100 text-blue-600' },
+  { key: 'New', label: 'New', count: 155, badgeClass: 'bg-gray-100 text-gray-800' },
   { key: 'Processing', label: 'Processing', count: 162, badgeClass: 'bg-amber-100 text-amber-700' },
   { key: 'Shipped', label: 'Shipped', count: 205, badgeClass: 'bg-emerald-100 text-emerald-700' },
   { key: 'Delivered', label: 'Delivered', count: 409, badgeClass: 'bg-emerald-100 text-emerald-700' },

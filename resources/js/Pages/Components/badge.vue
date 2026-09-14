@@ -27,7 +27,7 @@ const props = defineProps({
 
 // Variant map
 const variants = {
-  blue: 'bg-blue-50 text-blue-600 border-blue-200',
+  blue: 'bg-gray-100 text-gray-900 border-gray-200',
   emerald: 'bg-emerald-50 text-emerald-600 border-emerald-200',
   rose: 'bg-rose-50 text-rose-600 border-rose-200',
   amber: 'bg-amber-50 text-amber-600 border-amber-200',

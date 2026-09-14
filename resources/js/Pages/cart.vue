@@ -45,11 +45,11 @@
                 <div class="min-w-0 flex-1">
                   <a
                     :href="`/products/${item.slug}`"
-                    class="font-semibold text-gray-900 hover:text-blue-600 transition-colors text-sm sm:text-base leading-snug line-clamp-2"
+                    class="font-semibold text-gray-900 hover:text-gray-700 transition-colors text-sm sm:text-base leading-snug line-clamp-2"
                   >
                     {{ item.name }}
                   </a>
-                  <p class="text-blue-600 font-semibold text-sm sm:text-base mt-1">
+                  <p class="text-gray-900 font-semibold text-sm sm:text-base mt-1">
                     ${{ item.price.toFixed(2) }}
                   </p>
                 </div>
@@ -124,7 +124,7 @@
             <Link
               href="/products"
               id="link-continue-shopping"
-              class="text-blue-600 hover:text-blue-700 hover:underline inline-flex items-center gap-1.5 transition-colors"
+              class="text-gray-900 hover:text-gray-700 hover:underline inline-flex items-center gap-1.5 transition-colors"
             >
               <p>&larr;</p>
               <p>Continue Shopping</p>
@@ -164,7 +164,7 @@
                 <!-- Total -->
                 <div class="flex items-center justify-between">
                   <p class="text-base font-bold text-gray-900">Total</p>
-                  <p class="text-xl font-bold text-blue-600">
+                  <p class="text-xl font-bold text-gray-900">
                     ${{ subtotal.toFixed(2) }}
                   </p>
                 </div>
@@ -175,7 +175,7 @@
             <Link
               id="btn-checkout"
               href="/login"
-              class="w-full mt-6 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 px-4 rounded-xl text-sm sm:text-base transition-colors duration-150 shadow-sm flex items-center justify-center gap-2 text-center"
+              class="w-full mt-6 bg-gray-900 hover:bg-gray-700 active:bg-black text-white font-semibold py-3 px-4 rounded-xl text-sm sm:text-base transition-colors duration-150 shadow-sm flex items-center justify-center gap-2 text-center"
             >
               Login to Checkout
             </Link>
@@ -185,7 +185,7 @@
               Or
               <Link
                 href="/register"
-                class="text-blue-600 hover:text-blue-700 hover:underline font-medium"
+                class="text-gray-900 hover:text-gray-700 hover:underline font-medium"
               >
                 create an account
               </Link>
@@ -235,7 +235,7 @@
         <Link
           href="/products"
           id="btn-start-shopping"
-          class="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 px-8 rounded-xl text-sm sm:text-base transition-colors shadow-sm"
+          class="inline-flex items-center justify-center bg-gray-900 hover:bg-gray-700 active:bg-black text-white font-semibold py-3 px-8 rounded-xl text-sm sm:text-base transition-colors shadow-sm"
         >
           Start Shopping
         </Link>

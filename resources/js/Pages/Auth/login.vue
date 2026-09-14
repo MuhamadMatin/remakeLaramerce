@@ -11,9 +11,9 @@
       >
         <Icon
           icon="lucide:store"
-          class="w-8 h-8 text-blue-600 transition-transform"
+          class="w-8 h-8 text-gray-900 transition-transform"
         />
-        <span class="text-blue-600 font-bold text-2xl tracking-tight">
+        <span class="text-gray-900 font-bold text-2xl tracking-tight">
           Store
         </span>
       </a>
@@ -27,7 +27,7 @@
         <Link
           id="link-register"
           href="/register"
-          class="font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors ml-0.5"
+          class="font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors ml-0.5"
         >
           Sign up
         </Link>
@@ -76,7 +76,7 @@
               required
               autocomplete="username"
               placeholder="name@example.com"
-              class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              class="w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors"
               :class="{ 'border-red-500': form.errors.username }"
             />
           </div>
@@ -101,7 +101,7 @@
               required
               autocomplete="current-password"
               placeholder="••••••••"
-              class="w-full pl-3.5 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              class="w-full pl-3.5 pr-10 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-gray-900 transition-colors"
               :class="{ 'border-red-500': form.errors.password }"
             />
             <button
@@ -130,7 +130,7 @@
               v-model="form.remember"
               type="checkbox"
               name="remember"
-              class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+              class="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900 cursor-pointer"
             />
             <span class="text-sm text-gray-600">Remember me</span>
           </label>
@@ -138,7 +138,7 @@
           <Link
             id="link-forgot-password"
             href="/forgot-password"
-            class="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+            class="text-sm font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors"
           >
             Forgot password?
           </Link>
@@ -149,7 +149,7 @@
           <button
             type="submit"
             :disabled="form.processing"
-            class="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-2.5 sm:py-3 px-4 rounded-lg text-sm sm:text-base transition-colors duration-150 shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            class="w-full bg-gray-900 hover:bg-gray-700 active:bg-black text-white font-semibold py-2.5 sm:py-3 px-4 rounded-lg text-sm sm:text-base transition-colors duration-150 shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Icon
               v-if="form.processing"
@@ -167,7 +167,7 @@
       <Link
         href="/"
         id="link-back-home"
-        class="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+        class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors"
       >
         <p>&larr;</p>
         <p>Back to Home</p>

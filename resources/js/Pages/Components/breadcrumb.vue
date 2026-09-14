@@ -12,7 +12,7 @@
         <Link
           v-if="item.href && index < items.length - 1"
           :href="item.href"
-          class="text-gray-500 hover:text-blue-600 transition-colors"
+          class="text-gray-500 hover:text-gray-900 transition-colors"
         >
           {{ item.label }}
         </Link>

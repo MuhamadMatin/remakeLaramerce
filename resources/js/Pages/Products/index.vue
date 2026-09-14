@@ -13,7 +13,7 @@
             />
             <p
               @click="clearAllFilterSearch()"
-              class="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline transition-colors cursor-pointer"
+              class="text-sm font-medium text-gray-900 hover:text-gray-700 hover:underline transition-colors cursor-pointer"
             >
               Clear
             </p>
@@ -56,7 +56,7 @@
               <li>
                 <Link
                   href="/products"
-                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between text-gray-600 hover:text-blue-600"
+                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between text-gray-600 hover:text-gray-900"
                 >
                   <p>All Categories</p>
                 </Link>
@@ -64,10 +64,10 @@
               <li v-for="category in categories" :key="category.id_category">
                 <span
                   @click="categoryFilter(category.slug)"
-                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between hover:text-blue-600"
+                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between hover:text-gray-900"
                   :class="
                     selectedCategory === category.slug
-                      ? 'bg-gray-100 text-blue-600'
+                      ? 'bg-gray-100 text-gray-900 font-semibold'
                       : 'text-gray-600'
                   "
                 >
@@ -104,7 +104,7 @@
               <li>
                 <Link
                   href="/products"
-                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between text-gray-600 hover:text-blue-600"
+                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between text-gray-600 hover:text-gray-900"
                 >
                   <p>All Brands</p>
                 </Link>
@@ -112,10 +112,10 @@
               <li v-for="brand in brands" :key="brand.id_brand">
                 <span
                   @click="sortFilter(brand.slug)"
-                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between hover:text-blue-600"
+                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between hover:text-gray-900"
                   :class="
                     selectedSort === brand.slug
-                      ? 'bg-gray-100 text-blue-600'
+                      ? 'bg-gray-100 text-gray-900 font-semibold'
                       : 'text-gray-600'
                   "
                 >
@@ -149,10 +149,10 @@
               <li v-for="sorting in sortArray" :key="sorting.value">
                 <span
                   @click="sortFilter(sorting.value)"
-                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between hover:text-blue-600"
+                  class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-gray-50 hover:cursor-pointer flex items-center justify-between hover:text-gray-900"
                   :class="
                     selectedSort === sorting.value
-                      ? 'bg-gray-100 text-blue-600'
+                      ? 'bg-gray-100 text-gray-900 font-semibold'
                       : 'text-gray-600'
                   "
                 >
@@ -193,7 +193,7 @@
             <template #loading>
               <div class="flex justify-center items-center py-8">
                 <div
-                  class="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"
+                  class="w-8 h-8 border-4 border-gray-300 border-t-gray-900 rounded-full animate-spin"
                 />
               </div>
             </template>
@@ -202,7 +202,7 @@
             <template #next="{ loading, hasMore }">
               <div v-if="loading" class="flex justify-center items-center py-8">
                 <div
-                  class="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"
+                  class="w-8 h-8 border-4 border-gray-300 border-t-gray-900 rounded-full animate-spin"
                 />
               </div>
               <div v-else-if="!hasMore" class="text-center py-8">
