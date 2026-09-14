@@ -1,3 +1,8 @@
 import { createInertiaApp } from "@inertiajs/vue3";
 
-createInertiaApp();
+createInertiaApp({
+  progress: {
+    color: "#EFB100",
+    showSpinner: false,
+  },
+});
