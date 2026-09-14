@@ -18,8 +18,9 @@ class DashboardController extends Controller
     $newest_products = Product::with(['category'])->with(['variants.images' => function ($query) {
       $query->where('is_primary', true);
     }])->orderBy('created_by', 'DESC')->limit(12)->get();
+    $brands = Brand::inRandomOrder()->limit(8)->get();
 
-    return Inertia('index', compact('categories', 'featured_products', 'newest_products'));
+    return Inertia('index', compact('categories', 'featured_products', 'newest_products', 'brands'));
   }
 
   public function products(Request $request)
