@@ -1,5 +1,7 @@
 <template>
-  <div class="w-full min-w-0 max-w-full rounded-xl border border-gray-200 bg-white shadow-xs overflow-hidden">
+  <div
+    class="w-full min-w-0 max-w-full rounded-xl border border-gray-200 bg-white shadow-xs overflow-hidden"
+  >
     <!-- Toolbar -->
     <div
       class="flex flex-col gap-3 p-3.5 md:flex-row md:items-center md:justify-between md:p-4 lg:p-5"
@@ -15,9 +17,14 @@
           <button
             type="button"
             class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-xs font-medium text-gray-700 shadow-xs transition hover:bg-gray-50 cursor-pointer md:px-3 md:text-sm"
-            @click="activePanel = activePanel === 'bulkActions' ? null : 'bulkActions'"
+            @click="
+              activePanel = activePanel === 'bulkActions' ? null : 'bulkActions'
+            "
           >
-            <Icon icon="lucide:ellipsis-vertical" class="h-3.5 w-3.5 text-gray-400" />
+            <Icon
+              icon="lucide:ellipsis-vertical"
+              class="h-3.5 w-3.5 text-gray-400"
+            />
             <p>Bulk actions</p>
           </button>
 
@@ -82,7 +89,7 @@
             :value="form.search"
             type="text"
             placeholder="Search"
-            class="w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-9 pr-3 text-xs text-gray-800 placeholder-gray-400 shadow-xs transition focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-700 md:text-sm"
+            class="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 pl-9 pr-3 text-xs text-gray-800 placeholder-gray-400 shadow-xs transition focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-700 md:text-sm"
             @input="onSearch($event.target.value)"
           />
         </div>
@@ -264,18 +271,7 @@
 
     <!-- Table area -->
     <div class="relative border-t border-gray-200">
-      <!-- Loading -->
-      <div
-        v-if="isLoading"
-        class="absolute inset-0 z-20 flex items-center justify-center bg-white/60 backdrop-blur-[1px]"
-      >
-        <Icon icon="eos-icons:loading" class="h-8 w-8 text-gray-900" />
-      </div>
-
-      <div
-        class="w-full min-w-0 overflow-x-auto"
-        :class="{ 'pointer-events-none opacity-50': isLoading }"
-      >
+      <div class="w-full min-w-0 overflow-x-auto">
         <table class="min-w-full text-left text-xs md:text-sm">
           <thead class="border-b border-gray-200 bg-white">
             <tr>
@@ -309,10 +305,13 @@
                 :key="columnItem.key"
                 scope="col"
                 class="px-3 py-3 font-semibold text-gray-800 whitespace-nowrap md:px-4 md:py-3.5 lg:px-6"
-                :class="columnItem.align === 'right' ? 'text-right' : 'text-left'"
+                :class="[
+                  columnItem.align === 'right' ? 'text-right' : 'text-left',
+                  columnItem.type === 'image' ? 'h-full w-48' : '',
+                ]"
               >
                 <button
-                  v-if="columnItem.sortable !== false"
+                  v-if="isColumnSortable(columnItem)"
                   type="button"
                   class="group inline-flex items-center gap-1 font-semibold text-gray-800 transition hover:text-gray-950 cursor-pointer"
                   @click="sortBy(columnItem.key)"
@@ -348,9 +347,71 @@
             </tr>
           </thead>
 
-          <tbody class="divide-y divide-gray-100 bg-white">
+          <tbody
+            class="divide-y divide-gray-100 bg-white"
+            :class="{ 'pointer-events-none': isTableLoading }"
+          >
+            <!-- Skeleton loading state -->
+            <template v-if="isTableLoading">
+              <tr
+                v-for="skeletonIndex in skeletonRows"
+                :key="`skeleton-${skeletonIndex}`"
+              >
+                <!-- Checkbox td -->
+                <td
+                  v-if="checkable"
+                  class="px-3 py-3 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                >
+                  <div class="h-4 w-4 rounded bg-gray-200 animate-pulse" />
+                </td>
+
+                <!-- Row number td -->
+                <td
+                  v-if="showRowNumber"
+                  class="px-3 py-3 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                >
+                  <div class="h-4 w-6 rounded bg-gray-200 animate-pulse" />
+                </td>
+
+                <!-- Dynamic columns td -->
+                <td
+                  v-for="(columnItem, columnIndex) in visibleColumns"
+                  :key="columnItem.key"
+                  class="px-3 py-3 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                  :class="cellClasses(columnItem, columnIndex)"
+                >
+                  <div
+                    v-if="columnItem.type === 'image'"
+                    class="aspect-square w-24 shrink-0 rounded-md bg-gray-200 animate-pulse"
+                  />
+                  <div
+                    v-else
+                    class="h-4 rounded bg-gray-200 animate-pulse"
+                    :class="skeletonBarWidth(columnIndex, skeletonIndex)"
+                  />
+                </td>
+
+                <!-- Actions td -->
+                <td
+                  v-if="showActions"
+                  class="sticky right-0 z-10 whitespace-nowrap bg-white px-3 py-3 text-right shadow-2xs md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                >
+                  <!-- Mobile actions skeleton -->
+                  <div class="flex justify-end md:hidden">
+                    <div class="h-7 w-7 rounded-lg bg-gray-200 animate-pulse" />
+                  </div>
+
+                  <!-- Tablet & Desktop actions skeleton -->
+                  <div class="hidden items-center justify-end gap-1 md:flex">
+                    <div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse" />
+                    <div class="h-8 w-8 rounded-lg bg-gray-200 animate-pulse" />
+                  </div>
+                </td>
+              </tr>
+            </template>
+
             <!-- Empty state -->
-            <tr v-if="rows.length === 0">
+            <tr v-else-if="rows.length === 0">
               <td
                 :colspan="
                   visibleColumns.length +
@@ -365,140 +426,188 @@
             </tr>
 
             <!-- Data rows -->
-            <tr
-              v-for="(rowItem, rowIndex) in rows"
-              :key="rowItem[rowKey]"
-              class="group transition-colors hover:bg-gray-50/70"
-              :class="isRowSelected(rowItem) ? 'bg-gray-50' : ''"
-            >
-              <!-- Checkbox td -->
-              <td
-                v-if="checkable"
-                class="px-3 py-3 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+            <template v-else>
+              <tr
+                v-for="(rowItem, rowIndex) in rows"
+                :key="rowItem[rowKey]"
+                class="group transition-colors hover:bg-gray-50/70"
+                :class="isRowSelected(rowItem) ? 'bg-gray-50' : ''"
               >
-                <input
-                  v-model="selectedRowKeys"
-                  type="checkbox"
-                  :value="rowItem[rowKey]"
-                  class="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-0 focus:outline-none"
-                />
-              </td>
-
-              <!-- Row number td -->
-              <td
-                v-if="showRowNumber"
-                class="px-3 py-3 text-gray-500 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
-              >
-                {{ rowNumber(rowIndex) }}
-              </td>
-
-              <!-- Columns td: auto-loop, nilai diambil dari columnItem.data (fallback: columnItem.label) -->
-              <td
-                v-for="(columnItem, columnIndex) in visibleColumns"
-                :key="columnItem.key"
-                class="px-3 py-3 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
-                :class="[
-                  columnItem.align === 'right' ? 'text-right' : 'text-left',
-                  columnIndex === 0 ? 'font-medium text-gray-900 whitespace-nowrap' : 'text-gray-600',
-                  columnItem.key === 'description' || columnItem.key === 'deskripsi' || columnItem.key === 'desc'
-                    ? 'min-w-[160px] max-w-xs md:max-w-md lg:max-w-lg truncate'
-                    : 'whitespace-nowrap'
-                ]"
-                :title="
-                  columnItem.key === 'description' || columnItem.key === 'deskripsi' || columnItem.key === 'desc'
-                    ? formatCell(getCellValue(rowItem, columnItem))
-                    : undefined
-                "
-              >
-                <slot
-                  :name="`cell-${columnItem.key}`"
-                  :row="rowItem"
-                  :value="getCellValue(rowItem, columnItem)"
-                  :column="columnItem"
-                  :index="rowIndex"
+                <!-- Checkbox td -->
+                <td
+                  v-if="checkable"
+                  class="px-3 py-3 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
                 >
-                  {{ formatCell(getCellValue(rowItem, columnItem)) }}
-                </slot>
-              </td>
+                  <input
+                    v-model="selectedRowKeys"
+                    type="checkbox"
+                    :value="rowItem[rowKey]"
+                    class="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-0 focus:outline-none"
+                  />
+                </td>
 
-              <!-- Actions td -->
-              <td
-                v-if="showActions"
-                class="sticky right-0 z-10 whitespace-nowrap px-3 py-3 text-right transition-colors shadow-[-6px_0_10px_-4px_rgba(0,0,0,0.06)] md:px-4 md:py-3.5 lg:px-6 lg:py-4"
-                :class="isRowSelected(rowItem) ? 'bg-gray-50' : 'bg-white group-hover:bg-gray-50/70'"
-              >
-                <!-- Mobile: Kebab dropdown -->
-                <div class="relative inline-block text-left md:hidden">
-                  <button
-                    type="button"
-                    class="rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
-                    @click.stop="toggleActionMenu(rowItem)"
-                  >
-                    <Icon icon="lucide:ellipsis-vertical" class="h-4 w-4" />
-                  </button>
+                <!-- Row number td -->
+                <td
+                  v-if="showRowNumber"
+                  class="px-3 py-3 text-gray-500 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                >
+                  {{ rowNumber(rowIndex) }}
+                </td>
 
-                  <!-- Dark dropdown -->
-                  <transition
-                    enter-active-class="transition duration-150 ease-out"
-                    enter-from-class="scale-95 opacity-0"
-                    enter-to-class="scale-100 opacity-100"
-                    leave-active-class="transition duration-100 ease-in"
-                    leave-from-class="scale-100 opacity-100"
-                    leave-to-class="scale-95 opacity-0"
+                <td
+                  v-for="(columnItem, columnIndex) in visibleColumns"
+                  :key="columnItem.key"
+                  class="px-3 py-3 md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                  :class="cellClasses(columnItem, columnIndex)"
+                  :title="cellTitle(rowItem, columnItem)"
+                >
+                  <slot
+                    :name="`cell-${columnItem.key}`"
+                    :row="rowItem"
+                    :value="getCellValue(rowItem, columnItem)"
+                    :column="columnItem"
+                    :index="rowIndex"
+                    :src="
+                      columnItem.type === 'image'
+                        ? resolveImageSrc(
+                            getCellValue(rowItem, columnItem),
+                            columnItem,
+                          )
+                        : undefined
+                    "
                   >
+                    <a
+                      v-if="
+                        columnItem.type === 'image' &&
+                        resolveImageSrc(
+                          getCellValue(rowItem, columnItem),
+                          columnItem,
+                        )
+                      "
+                      :href="
+                        resolveImageSrc(
+                          getCellValue(rowItem, columnItem),
+                          columnItem,
+                        )
+                      "
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-block shrink-0"
+                      @click.stop
+                    >
+                      <img
+                        :src="
+                          resolveImageSrc(
+                            getCellValue(rowItem, columnItem),
+                            columnItem,
+                          )
+                        "
+                        :alt="columnItem.label"
+                        class="aspect-square w-24 md:w-32 lg:w-48 shrink-0 rounded-md border border-gray-200 bg-gray-50 object-cover transition hover:opacity-80"
+                        loading="lazy"
+                        @error="handleImageError"
+                      />
+                    </a>
                     <div
-                      v-show="openActionRowId === rowItem[rowKey]"
-                      class="absolute right-0 z-30 mt-1 w-44 origin-top-right rounded-xl bg-gray-900 p-1.5 shadow-2xl ring-1 ring-white/10"
+                      v-else-if="columnItem.type === 'image'"
+                      class="flex aspect-square w-24 md:w-32 lg:w-48 shrink-0 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-gray-300"
                     >
-                      <!-- Mobile actions (default: Edit + Delete, overridable) -->
-                      <slot name="row-actions-mobile" :row="rowItem">
-                        <Link
-                          v-if="resolveEditHref(rowItem)"
-                          :href="resolveEditHref(rowItem)"
-                          class="flex w-full items-center gap-2.5 px-3.5 py-2 text-sm text-green-400 whitespace-nowrap transition-colors hover:bg-green-400/10 cursor-pointer"
-                        >
-                          <Icon icon="lucide:pencil" class="h-4 w-4" />
-                          Edit
-                        </Link>
-                        <button
-                          v-if="resolveDeleteRoute(rowItem)"
-                          type="button"
-                          class="flex w-full items-center gap-2.5 px-3.5 py-2 text-sm text-red-400 whitespace-nowrap transition-colors hover:bg-red-400/10 cursor-pointer"
-                          @click="destroyRow(rowItem)"
-                        >
-                          <Icon icon="lucide:trash-2" class="h-4 w-4" />
-                          Delete
-                        </button>
-                      </slot>
+                      <Icon
+                        icon="lucide:image-off"
+                        class="h-4 w-4 md:h-5 md:w-5"
+                      />
                     </div>
-                  </transition>
-                </div>
 
-                <!-- Tablet (md) & Desktop (lg): Inline actions -->
-                <div class="hidden items-center justify-end gap-1 md:flex">
-                  <!-- Desktop actions (default: Edit + Delete, overridable) -->
-                  <slot name="row-actions" :row="rowItem">
-                    <Link
-                      v-if="resolveEditHref(rowItem)"
-                      :href="resolveEditHref(rowItem)"
-                      class="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-700"
-                      title="Edit"
-                    >
-                      <Icon icon="lucide:pencil" class="h-4 w-4" />
-                    </Link>
-                    <button
-                      v-if="resolveDeleteRoute(rowItem)"
-                      type="button"
-                      class="rounded-lg p-2 text-red-400 transition hover:bg-red-50 hover:text-red-600 cursor-pointer"
-                      title="Delete"
-                      @click="destroyRow(rowItem)"
-                    >
-                      <Icon icon="lucide:trash-2" class="h-4 w-4" />
-                    </button>
+                    <!-- Default rendering: kolom teks biasa -->
+                    <template v-else>
+                      {{ formatCell(getCellValue(rowItem, columnItem)) }}
+                    </template>
                   </slot>
-                </div>
-              </td>
-            </tr>
+                </td>
+
+                <!-- Actions td -->
+                <td
+                  v-if="showActions"
+                  class="sticky right-0 z-10 whitespace-nowrap px-3 py-3 text-right transition-colors shadow-2xs md:px-4 md:py-3.5 lg:px-6 lg:py-4"
+                  :class="
+                    isRowSelected(rowItem)
+                      ? 'bg-gray-50'
+                      : 'bg-white group-hover:bg-gray-50/70'
+                  "
+                >
+                  <!-- Mobile: Kebab dropdown -->
+                  <div class="relative inline-block text-left md:hidden">
+                    <button
+                      type="button"
+                      class="rounded-lg p-1.5 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
+                      @click.stop="toggleActionMenu(rowItem)"
+                    >
+                      <Icon icon="lucide:ellipsis-vertical" class="h-4 w-4" />
+                    </button>
+
+                    <!-- Dark dropdown -->
+                    <transition
+                      enter-active-class="transition duration-150 ease-out"
+                      enter-from-class="scale-95 opacity-0"
+                      enter-to-class="scale-100 opacity-100"
+                      leave-active-class="transition duration-100 ease-in"
+                      leave-from-class="scale-100 opacity-100"
+                      leave-to-class="scale-95 opacity-0"
+                    >
+                      <div
+                        v-show="openActionRowId === rowItem[rowKey]"
+                        class="absolute right-0 z-30 mt-1 w-44 origin-top-right rounded-xl bg-gray-900 p-1.5 shadow-2xl ring-1 ring-white/10"
+                      >
+                        <!-- Mobile actions (default: Edit + Delete, overridable) -->
+                        <slot name="row-actions-mobile" :row="rowItem">
+                          <Link
+                            v-if="resolveEditHref(rowItem)"
+                            :href="resolveEditHref(rowItem)"
+                            class="flex w-full items-center gap-2.5 px-3.5 py-2 text-sm text-green-400 whitespace-nowrap transition-colors hover:bg-green-400/10 cursor-pointer"
+                          >
+                            <Icon icon="lucide:pencil" class="h-4 w-4" />
+                            Edit
+                          </Link>
+                          <button
+                            v-if="resolveDeleteRoute(rowItem)"
+                            type="button"
+                            class="flex w-full items-center gap-2.5 px-3.5 py-2 text-sm text-red-400 whitespace-nowrap transition-colors hover:bg-red-400/10 cursor-pointer"
+                            @click="destroyRow(rowItem)"
+                          >
+                            <Icon icon="lucide:trash-2" class="h-4 w-4" />
+                            Delete
+                          </button>
+                        </slot>
+                      </div>
+                    </transition>
+                  </div>
+
+                  <!-- Tablet (md) & Desktop (lg): Inline actions -->
+                  <div class="hidden items-center justify-end gap-1 md:flex">
+                    <!-- Desktop actions (default: Edit + Delete, overridable) -->
+                    <slot name="row-actions" :row="rowItem">
+                      <Link
+                        v-if="resolveEditHref(rowItem)"
+                        :href="resolveEditHref(rowItem)"
+                        class="rounded-lg p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-700"
+                        title="Edit"
+                      >
+                        <Icon icon="lucide:pencil" class="h-4 w-4" />
+                      </Link>
+                      <button
+                        v-if="resolveDeleteRoute(rowItem)"
+                        type="button"
+                        class="rounded-lg p-2 text-red-400 transition hover:bg-red-50 hover:text-red-600 cursor-pointer"
+                        title="Delete"
+                        @click="destroyRow(rowItem)"
+                      >
+                        <Icon icon="lucide:trash-2" class="h-4 w-4" />
+                      </button>
+                    </slot>
+                  </div>
+                </td>
+              </tr>
+            </template>
           </tbody>
         </table>
       </div>
@@ -509,11 +618,14 @@
       class="flex flex-col gap-3 border-t border-gray-200 px-3.5 py-3 md:flex-row md:items-center md:justify-between md:px-4 md:py-3.5 lg:px-6 lg:py-4"
     >
       <!-- Result counts -->
-      <span class="text-xs text-gray-500 md:text-sm">
+      <span class="text-xs text-gray-500 md:text-sm flex gap-1">
         Showing
-        <p class="font-medium text-gray-700">{{ from }}</p> to
-        <p class="font-medium text-gray-700">{{ to }}</p> of
-        <p class="font-medium text-gray-700">{{ totalRows }}</p> results
+        <p class="font-medium text-gray-700">{{ from }}</p>
+        to
+        <p class="font-medium text-gray-700">{{ to }}</p>
+        of
+        <p class="font-medium text-gray-700">{{ totalRows }}</p>
+        results
       </span>
 
       <!-- Controls -->
@@ -522,7 +634,7 @@
       >
         <!-- Per page -->
         <div
-          class="flex items-center rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-xs text-gray-600 shadow-xs md:text-sm"
+          class="flex items-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs text-gray-600 shadow-xs md:text-sm"
         >
           <span class="font-medium text-gray-500">Per page</span>
           <div class="relative flex items-center">
@@ -531,7 +643,11 @@
               @change="changePerPage"
               class="cursor-pointer appearance-none border-0 bg-transparent py-0 pl-1.5 pr-5 text-xs font-medium text-gray-700 focus:outline-none focus:ring-0 md:text-sm"
             >
-              <option v-for="perPageOption in perPageOptions" :key="perPageOption" :value="perPageOption">
+              <option
+                v-for="perPageOption in perPageOptions"
+                :key="perPageOption"
+                :value="perPageOption"
+              >
                 {{ perPageOption }}
               </option>
             </select>
@@ -559,10 +675,7 @@
           </button>
 
           <!-- Numbers -->
-          <template
-            v-for="(pageItem, pageIndex) in pageItems"
-            :key="pageIndex"
-          >
+          <template v-for="(pageItem, pageIndex) in pageItems" :key="pageIndex">
             <span
               v-if="pageItem === '…'"
               class="flex h-8 min-w-8 items-center justify-center px-2 text-xs text-gray-400 select-none md:h-9 md:min-w-9 md:text-sm"
@@ -628,15 +741,23 @@ const props = defineProps({
   showRowNumber: { type: Boolean, default: false },
   editRoute: { type: [String, Function], default: null },
   deleteRoute: { type: [String, Function], default: null },
+  imageBaseUrl: { type: String, default: "" },
+  loading: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(["selection-change", "bulk-delete", "group-by-change"]);
+const emit = defineEmits([
+  "selection-change",
+  "bulk-delete",
+  "group-by-change",
+]);
 
 // State
 const reservedFilterKeys = ["page", "per_page", "sort", "direction"];
 
 const normalizedInitialFilters =
-  props.filters && !Array.isArray(props.filters) && typeof props.filters === "object"
+  props.filters &&
+  !Array.isArray(props.filters) &&
+  typeof props.filters === "object"
     ? props.filters
     : {};
 
@@ -667,10 +788,24 @@ const form = reactive({
 const activePanel = ref(null);
 const selectedRowKeys = ref([]);
 const isLoading = ref(false);
+const isTableLoading = computed(() =>
+  Boolean(props.loading || isLoading.value),
+);
 const columnsWrapperRef = ref(null);
 const filtersWrapperRef = ref(null);
 const bulkActionsWrapperRef = ref(null);
 const openActionRowId = ref(null);
+
+// Skeleton
+const skeletonRows = computed(() => {
+  const count = props.rows && props.rows.length > 0 ? props.rows.length : 5;
+  return Array.from({ length: Math.min(count, 10) }, (_, index) => index);
+});
+
+function skeletonBarWidth(columnIndex, rowIndex) {
+  const widths = ["w-3/4", "w-1/2", "w-4/5", "w-2/3", "w-3/5"];
+  return widths[(columnIndex + rowIndex) % widths.length];
+}
 
 // Safe filters
 const safeFilters = computed(() => {
@@ -695,7 +830,8 @@ const groupableColumns = computed(() => {
   if (props.groupByOptions && props.groupByOptions.length > 0) {
     return props.groupByOptions;
   }
-  return props.columns;
+  // Kolom bertipe image tidak masuk opsi group-by default
+  return props.columns.filter((columnItem) => columnItem.type !== "image");
 });
 
 function onGroupByChange(changeEvent) {
@@ -707,7 +843,8 @@ function onGroupByChange(changeEvent) {
 // Action dropdown
 function toggleActionMenu(rowItem) {
   const rowIdentifier = rowItem[props.rowKey];
-  openActionRowId.value = openActionRowId.value === rowIdentifier ? null : rowIdentifier;
+  openActionRowId.value =
+    openActionRowId.value === rowIdentifier ? null : rowIdentifier;
 }
 
 // Default row actions (edit/delete)
@@ -720,7 +857,8 @@ function resolveEditHref(rowItem) {
 }
 
 function resolveDeleteRoute(rowItem) {
-  if (typeof props.deleteRoute === "function") return props.deleteRoute(rowItem);
+  if (typeof props.deleteRoute === "function")
+    return props.deleteRoute(rowItem);
   return props.deleteRoute || null;
 }
 
@@ -747,6 +885,8 @@ function destroyRow(rowItem) {
           (rowIdentifier) => rowIdentifier !== rowItem[props.rowKey],
         );
         Swal.fire({
+          toast: true,
+          position: "top-end",
           title: "Berhasil!",
           text: "Data berhasil dihapus.",
           icon: "success",
@@ -764,7 +904,9 @@ const paginationMeta = computed(
 );
 const currentPage = computed(() => paginationMeta.value.current_page ?? 1);
 const perPage = computed(() => paginationMeta.value.per_page ?? 10);
-const totalRows = computed(() => paginationMeta.value.total ?? props.rows.length);
+const totalRows = computed(
+  () => paginationMeta.value.total ?? props.rows.length,
+);
 const lastPage = computed(
   () =>
     paginationMeta.value.last_page ??
@@ -777,7 +919,8 @@ const from = computed(
 );
 const to = computed(
   () =>
-    paginationMeta.value.to ?? Math.min(currentPage.value * perPage.value, totalRows.value),
+    paginationMeta.value.to ??
+    Math.min(currentPage.value * perPage.value, totalRows.value),
 );
 
 // Nomor urut baris, mengikuti posisi halaman saat ini
@@ -832,10 +975,19 @@ const sortDir = computed(() => {
   return "asc";
 });
 
+function isColumnSortable(columnItem) {
+  if (columnItem.sortable === true) return true;
+  if (columnItem.sortable === false) return false;
+  return columnItem.type !== "image";
+}
+
 function sortBy(columnKey) {
-  const targetColumn = props.columns.find((columnItem) => columnItem.key === columnKey);
-  if (!targetColumn || targetColumn.sortable === false) return;
-  const sortDirection = sortKey.value === columnKey && sortDir.value === "asc" ? "desc" : "asc";
+  const targetColumn = props.columns.find(
+    (columnItem) => columnItem.key === columnKey,
+  );
+  if (!targetColumn || !isColumnSortable(targetColumn)) return;
+  const sortDirection =
+    sortKey.value === columnKey && sortDir.value === "asc" ? "desc" : "asc";
   updateQuery({ page: 1, sort: columnKey, direction: sortDirection });
 }
 
@@ -870,13 +1022,22 @@ function updateQuery(overrides = {}, { replace = false } = {}) {
 watch(
   safeFilters,
   (newFilters) => {
-    if (typeof newFilters.search === "string" && newFilters.search !== form.search) {
+    if (
+      typeof newFilters.search === "string" &&
+      newFilters.search !== form.search
+    ) {
       form.search = newFilters.search;
     }
-    if (typeof newFilters.date_from === "string" && newFilters.date_from !== form.date_from) {
+    if (
+      typeof newFilters.date_from === "string" &&
+      newFilters.date_from !== form.date_from
+    ) {
       form.date_from = newFilters.date_from;
     }
-    if (typeof newFilters.date_to === "string" && newFilters.date_to !== form.date_to) {
+    if (
+      typeof newFilters.date_to === "string" &&
+      newFilters.date_to !== form.date_to
+    ) {
       form.date_to = newFilters.date_to;
     }
     if (typeof newFilters.group_by === "string") {
@@ -900,7 +1061,11 @@ function onSearch(searchValue) {
 const activeFilterCount = computed(
   () =>
     Object.entries(form).filter(
-      ([filterKey, filterValue]) => filterKey !== "search" && filterValue !== "" && filterValue !== null && filterValue !== undefined,
+      ([filterKey, filterValue]) =>
+        filterKey !== "search" &&
+        filterValue !== "" &&
+        filterValue !== null &&
+        filterValue !== undefined,
     ).length,
 );
 
@@ -919,21 +1084,31 @@ function resetFilters() {
 }
 
 // Checkbox selection
-const rowIds = computed(() => props.rows.map((rowItem) => rowItem[props.rowKey]));
+const rowIds = computed(() =>
+  props.rows.map((rowItem) => rowItem[props.rowKey]),
+);
 const allSelected = computed(
   () =>
     rowIds.value.length > 0 &&
-    rowIds.value.every((rowIdentifier) => selectedRowKeys.value.includes(rowIdentifier)),
+    rowIds.value.every((rowIdentifier) =>
+      selectedRowKeys.value.includes(rowIdentifier),
+    ),
 );
 const someSelected = computed(() =>
-  rowIds.value.some((rowIdentifier) => selectedRowKeys.value.includes(rowIdentifier)),
+  rowIds.value.some((rowIdentifier) =>
+    selectedRowKeys.value.includes(rowIdentifier),
+  ),
 );
 
 function toggleAll(changeEvent) {
   if (changeEvent.target.checked) {
-    selectedRowKeys.value = [...new Set([...selectedRowKeys.value, ...rowIds.value])];
+    selectedRowKeys.value = [
+      ...new Set([...selectedRowKeys.value, ...rowIds.value]),
+    ];
   } else {
-    selectedRowKeys.value = selectedRowKeys.value.filter((rowIdentifier) => !rowIds.value.includes(rowIdentifier));
+    selectedRowKeys.value = selectedRowKeys.value.filter(
+      (rowIdentifier) => !rowIds.value.includes(rowIdentifier),
+    );
   }
 }
 
@@ -943,7 +1118,9 @@ function isRowSelected(rowItem) {
 
 // Selection actions
 function selectAllRows() {
-  selectedRowKeys.value = [...new Set([...selectedRowKeys.value, ...rowIds.value])];
+  selectedRowKeys.value = [
+    ...new Set([...selectedRowKeys.value, ...rowIds.value]),
+  ];
 }
 
 function clearSelection() {
@@ -955,7 +1132,11 @@ function handleBulkDeleteAndClose() {
   bulkDelete();
 }
 
-watch(selectedRowKeys, (selectedArray) => emit("selection-change", selectedArray), { deep: true });
+watch(
+  selectedRowKeys,
+  (selectedArray) => emit("selection-change", selectedArray),
+  { deep: true },
+);
 
 // Bulk delete
 function bulkDelete() {
@@ -979,6 +1160,8 @@ function bulkDelete() {
           onSuccess: () => {
             selectedRowKeys.value = [];
             Swal.fire({
+              toast: true,
+              position: "top-end",
               title: "Berhasil!",
               text: "Data terpilih berhasil dihapus.",
               icon: "success",
@@ -1023,7 +1206,9 @@ const visibleKeys = ref(
 );
 
 const visibleColumns = computed(() =>
-  props.columns.filter((columnItem) => visibleKeys.value.includes(columnItem.key)),
+  props.columns.filter((columnItem) =>
+    visibleKeys.value.includes(columnItem.key),
+  ),
 );
 
 function applyColumns() {
@@ -1069,15 +1254,89 @@ function getCellValue(rowItem, columnItem) {
   if (!dataPath.includes(".")) return rowItem?.[dataPath];
   return dataPath
     .split(".")
-    .reduce((accumulator, keySegment) => (accumulator == null ? accumulator : accumulator[keySegment]), rowItem);
+    .reduce(
+      (accumulator, keySegment) =>
+        accumulator == null ? accumulator : accumulator[keySegment],
+      rowItem,
+    );
 }
 
-// Helper: format nilai cell untuk ditampilkan
+// Helper: format nilai cell untuk ditampilkan (kolom teks biasa)
 function formatCell(cellValue) {
-  if (cellValue === null || cellValue === undefined || cellValue === "") return "—";
+  if (cellValue === null || cellValue === undefined || cellValue === "")
+    return "";
   if (typeof cellValue === "boolean") return cellValue ? "Yes" : "No";
-  if (Array.isArray(cellValue)) return cellValue.length ? cellValue.join(", ") : "—";
+  if (Array.isArray(cellValue))
+    return cellValue.length ? cellValue.join(", ") : "";
   return cellValue;
+}
+
+// Helper: kelas & title untuk td, disatukan supaya template lebih ringkas
+function isTruncatedColumn(columnItem) {
+  if (columnItem.type === "image") return false;
+  return (
+    columnItem.key === "description" ||
+    columnItem.key === "deskripsi" ||
+    columnItem.key === "desc"
+  );
+}
+
+function cellClasses(columnItem, columnIndex) {
+  const classes = [columnItem.align === "right" ? "text-right" : "text-left"];
+
+  if (columnItem.type === "image") {
+    classes.push("whitespace-nowrap", "w-24", "md:w-32", "lg:w-48");
+  } else if (columnIndex === 0) {
+    classes.push("font-medium", "text-gray-900", "whitespace-nowrap");
+  } else {
+    classes.push("text-gray-600");
+  }
+
+  if (isTruncatedColumn(columnItem)) {
+    classes.push(
+      "min-w-[160px]",
+      "max-w-xs",
+      "md:max-w-md",
+      "lg:max-w-lg",
+      "truncate",
+    );
+  } else if (columnItem.type !== "image") {
+    classes.push("whitespace-nowrap");
+  }
+
+  return classes;
+}
+
+function cellTitle(rowItem, columnItem) {
+  return isTruncatedColumn(columnItem)
+    ? formatCell(getCellValue(rowItem, columnItem))
+    : undefined;
+}
+
+const imagePlaceholderSrc =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpath d='M21 15l-5-5L5 21'/%3E%3C/svg%3E";
+
+function resolveImageSrc(rawValue, columnItem) {
+  if (!rawValue || typeof rawValue !== "string") return null;
+  if (/^(https?:)?\/\//.test(rawValue) || rawValue.startsWith("data:")) {
+    return rawValue;
+  }
+  const basePrefix = columnItem.baseUrl ?? props.imageBaseUrl ?? "";
+  if (!basePrefix) return rawValue;
+  const normalizedBase = basePrefix.endsWith("/")
+    ? basePrefix.slice(0, -1)
+    : basePrefix;
+  const normalizedPath = rawValue.startsWith("/") ? rawValue : `/${rawValue}`;
+  return `${normalizedBase}${normalizedPath}`;
+}
+
+// Saat gambar gagal dimuat (404, path salah, dll), ganti dengan placeholder
+function handleImageError(imageErrorEvent) {
+  const imageElement = imageErrorEvent.target;
+  if (imageElement.src !== imagePlaceholderSrc) {
+    imageElement.src = imagePlaceholderSrc;
+    imageElement.classList.add("p-2", "opacity-60");
+  }
 }
 
 // Outside click / Escape
@@ -1121,7 +1380,10 @@ onMounted(() => {
 });
 
 // Loading state
-const offStart = router.on("start", () => (isLoading.value = true));
+const offStart = router.on("start", () => {
+  isLoading.value = true;
+  openActionRowId.value = null;
+});
 const offFinish = router.on("finish", () => (isLoading.value = false));
 
 onUnmounted(() => {
