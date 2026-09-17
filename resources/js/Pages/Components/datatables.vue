@@ -56,7 +56,7 @@
             <select
               :value="selectedGroupBy"
               @change="onGroupByChange"
-              class="cursor-pointer appearance-none border-0 bg-transparent py-0 pl-1.5 pr-5 text-xs font-medium text-gray-700 focus:outline-none focus:ring-0 md:text-sm"
+              class="cursor-pointer appearance-none border-0 bg-transparent px-3 py-1 pl-1.5 pr-5 text-xs font-medium text-gray-700 focus:outline-none focus:ring-0 md:text-sm"
             >
               <option value="">-</option>
               <option
@@ -850,8 +850,15 @@ function toggleActionMenu(rowItem) {
 // Default row actions (edit/delete)
 function resolveEditHref(rowItem) {
   if (typeof props.editRoute === "function") return props.editRoute(rowItem);
-  if (typeof props.editRoute === "string" && props.editRoute) {
-    return props.editRoute.replace(":id", rowItem[props.rowKey]);
+  if (typeof props.editRoute === "string" && props.editRoute.trim() !== "") {
+    let targetUrl = props.editRoute;
+    if (targetUrl.includes(":slug")) {
+      targetUrl = targetUrl.replace(":slug", rowItem.slug ?? rowItem[props.rowKey]);
+    }
+    if (targetUrl.includes(":id")) {
+      targetUrl = targetUrl.replace(":id", rowItem[props.rowKey]);
+    }
+    return targetUrl;
   }
   return null;
 }
@@ -859,6 +866,16 @@ function resolveEditHref(rowItem) {
 function resolveDeleteRoute(rowItem) {
   if (typeof props.deleteRoute === "function")
     return props.deleteRoute(rowItem);
+  if (typeof props.deleteRoute === "string" && props.deleteRoute.trim() !== "") {
+    let targetUrl = props.deleteRoute;
+    if (targetUrl.includes(":slug")) {
+      targetUrl = targetUrl.replace(":slug", rowItem.slug ?? rowItem[props.rowKey]);
+    }
+    if (targetUrl.includes(":id")) {
+      targetUrl = targetUrl.replace(":id", rowItem[props.rowKey]);
+    }
+    return targetUrl;
+  }
   return props.deleteRoute || null;
 }
 
@@ -878,7 +895,10 @@ function destroyRow(rowItem) {
   }).then((confirmResult) => {
     if (!confirmResult.isConfirmed) return;
     router.delete(targetRoute, {
-      data: { id: rowItem[props.rowKey] },
+      data: {
+        id: rowItem[props.rowKey],
+        slug: rowItem.slug,
+      },
       preserveScroll: true,
       onSuccess: () => {
         selectedRowKeys.value = selectedRowKeys.value.filter(
@@ -1384,6 +1404,7 @@ const offStart = router.on("start", () => {
   isLoading.value = true;
   openActionRowId.value = null;
 });
+
 const offFinish = router.on("finish", () => (isLoading.value = false));
 
 onUnmounted(() => {
