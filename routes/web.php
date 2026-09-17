@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [DashboardController::class, 'home'])->name('index');
+
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login/store', [AuthController::class, 'storeLogin'])->name('login.store');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
@@ -20,6 +21,7 @@ Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name(
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/oauth/google', [AuthController::class, 'redirectToProvider'])->name('oauth.google');
 Route::get('/oauth/google/callback', [AuthController::class, 'handleGoogleAuth'])->name('oauth.google.callback');
+
 Route::get('/cart', function () {
   return Inertia('cart');
 });
@@ -58,27 +60,27 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
   Route::prefix('brands')->name('brands.')->group(function () {
     Route::get('/', [BrandController::class, 'index'])->name('index');
     Route::get('/add', [BrandController::class, 'create'])->name('create');
-    Route::post('/add', [BrandController::class, 'store'])->name('store');
-    Route::get('/edit/{user:slug}', [BrandController::class, 'edit'])->name('edit');
-    Route::put('/edit', [BrandController::class, 'update'])->name('update');
-    Route::delete('/delete', [BrandController::class, 'destroy'])->name('delete');
+    Route::post('/store', [BrandController::class, 'store'])->name('store');
+    Route::get('/edit/{brand:slug}', [BrandController::class, 'edit'])->name('edit');
+    Route::put('/update/{brand:slug}', [BrandController::class, 'update'])->name('update');
+    Route::delete('/delete/{brand:slug}', [BrandController::class, 'destroy'])->name('delete');
   });
   Route::prefix('categories')->name('categories.')->group(function () {
     Route::get('/', [CategoryController::class, 'index'])->name('index');
     Route::get('/add', [CategoryController::class, 'create'])->name('create');
-    Route::post('/add', [CategoryController::class, 'store'])->name('store');
-    Route::get('/edit/{user:slug}', [CategoryController::class, 'edit'])->name('edit');
-    Route::put('/edit', [CategoryController::class, 'update'])->name('update');
-    Route::delete('/delete', [CategoryController::class, 'destroy'])->name('delete');
+    Route::post('/store', [CategoryController::class, 'store'])->name('store');
+    Route::get('/edit/{category:slug}', [CategoryController::class, 'edit'])->name('edit');
+    Route::put('/update/{category:slug}', [CategoryController::class, 'update'])->name('update');
+    Route::delete('/delete/{category:slug}', [CategoryController::class, 'destroy'])->name('delete');
     Route::delete('/bulk-destroy', [CategoryController::class, 'bulkDestroy'])->name('bulkDestroy');
   });
   Route::prefix('settings')->name('settings.')->group(function () {
     Route::get('/', [SettingController::class, 'index'])->name('index');
     Route::get('/add', [SettingController::class, 'create'])->name('create');
-    Route::post('/add', [SettingController::class, 'store'])->name('store');
-    Route::get('/edit/{user:slug}', [SettingController::class, 'edit'])->name('edit');
-    Route::put('/edit', [SettingController::class, 'update'])->name('update');
-    Route::delete('/delete', [SettingController::class, 'destroy'])->name('delete');
+    Route::post('/store', [SettingController::class, 'store'])->name('store');
+    Route::get('/edit/{setting:id_setting}', [SettingController::class, 'edit'])->name('edit');
+    Route::put('/update/{setting:id_setting}', [SettingController::class, 'update'])->name('update');
+    Route::delete('/delete/{setting:id_setting}', [SettingController::class, 'destroy'])->name('delete');
   });
 });
 
