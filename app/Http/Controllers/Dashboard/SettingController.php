@@ -12,7 +12,7 @@ class SettingController extends Controller
    */
   public function index()
   {
-    return Inertia('Dashboard/Setting/index');
+    return Inertia('Dashboard/Settings/index');
   }
 
   /**

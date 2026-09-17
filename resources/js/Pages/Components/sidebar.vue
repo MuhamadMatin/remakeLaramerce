@@ -168,7 +168,7 @@
         href="/logout"
         method="post"
         as="button"
-        class="w-full flex items-center gap-3 p-2 border-2 border-red-400 text-red-400 rounded-lg hover:bg-red-400 transition-colors hover:cursor-pointer group"
+        class="w-full flex justify-center items-center gap-3 p-2 border-2 border-red-400 text-red-400 rounded-lg hover:bg-red-400 transition-colors hover:cursor-pointer group"
       >
         <Icon
           icon="reicon:logout-2"
@@ -268,13 +268,13 @@ const navigationGroups = ref([
       },
       {
         label: "Store",
-        href: prefix + "/store",
+        href: prefix + "/stores",
         icon: "lucide:calendar",
         badge: 71,
       },
       {
         label: "Store Owner",
-        href: prefix + "/owner",
+        href: prefix + "/owners",
         icon: "lucide:users",
       },
     ],
@@ -286,7 +286,7 @@ const navigationGroups = ref([
     items: [
       {
         label: "Setting",
-        href: prefix + "/setting",
+        href: prefix + "/settings",
         icon: "lucide:folder",
         badge: 9,
       },
