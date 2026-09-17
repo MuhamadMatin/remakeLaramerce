@@ -36,8 +36,8 @@
           row-key="id_category"
           route-name="/dashboard/categories"
           bulk-delete-route="/dashboard/categories/bulk-destroy"
-          edit-route="/dashboard/categories/edit/:id"
-          delete-route="/dashboard/categories/delete"
+          edit-route="/dashboard/categories/edit/:slug"
+          delete-route="/dashboard/categories/delete/:slug"
           date-filter-label="Created at"
         >
         </DataTable>

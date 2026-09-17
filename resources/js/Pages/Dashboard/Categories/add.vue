@@ -102,8 +102,9 @@
           </div>
 
           <!-- Actions -->
-          <div class="flex flex-col gap-3 mt-4 md:flex-row md:justify-end md:items-center">
-            <!-- Create -->
+          <div
+            class="flex flex-col gap-3 mt-4 md:flex-row md:justify-end md:items-center"
+          >
             <Button
               type="submit"
               variant="second"
@@ -114,24 +115,23 @@
               Create
             </Button>
 
-            <!-- Create & create another -->
             <Button
               type="submit"
               name="create_another"
               value="1"
               variant="third"
               size="md"
-              :disabled="form.processing"
+              :loading="form.processing"
               class="w-full md:w-auto"
             >
               Create & create another
             </Button>
 
-            <!-- Cancel -->
             <Button
               href="/dashboard/categories"
               variant="third"
               size="md"
+              :disabled="form.processing"
               class="w-full md:w-auto"
             >
               Cancel
@@ -158,6 +158,6 @@ const form = useForm({
 });
 
 function submit() {
-  form.post("/dashboard/categories/add");
+  form.post("/dashboard/categories/store");
 }
 </script>
