@@ -38,12 +38,13 @@ Route::prefix('products')->name('products.')->group(function () {
 Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(function () {
   Route::get('/', [HomeController::class, 'index'])->name('index');
   Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+
   Route::prefix('products')->name('products.')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('index');
     Route::get('/add', [ProductController::class, 'create'])->name('create');
-    Route::post('/add', [ProductController::class, 'store'])->name('store');
+    Route::post('/store', [ProductController::class, 'store'])->name('store');
     Route::get('/edit/{product:slug}', [ProductController::class, 'edit'])->name('edit');
-    Route::put('/edit', [ProductController::class, 'update'])->name('update');
+    Route::put('/update/{product:slug}', [ProductController::class, 'update'])->name('update');
     Route::delete('/delete', [ProductController::class, 'destroy'])->name('delete');
     Route::prefix('sales')->name('sales.')->group(function () {
       // product discount
@@ -52,9 +53,9 @@ Route::prefix('dashboard')->name('dashboard.')->middleware('auth')->group(functi
   Route::prefix('users')->name('users.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');
     Route::get('/add', [UserController::class, 'create'])->name('create');
-    Route::post('/add', [UserController::class, 'store'])->name('store');
-    Route::get('/edit/{user:slug}', [UserController::class, 'edit'])->name('edit');
-    Route::put('/edit', [UserController::class, 'update'])->name('update');
+    Route::post('/store', [UserController::class, 'store'])->name('store');
+    Route::get('/edit/{user:username}', [UserController::class, 'edit'])->name('edit');
+    Route::put('/update/{user:username}', [UserController::class, 'update'])->name('update');
     Route::delete('/delete', [UserController::class, 'destroy'])->name('delete');
   });
   Route::prefix('brands')->name('brands.')->group(function () {
