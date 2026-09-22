@@ -57,8 +57,7 @@ class CategoryController extends Controller
    */
   public function store(Request $request)
   {
-
-    $validate = Validator($request->all(), [
+    $validate = Validator::make($request->all(), [
       'name'        => 'required',
       'slug'        => 'required|unique:categories,slug',
       'description' => 'sometimes|nullable',
@@ -67,7 +66,6 @@ class CategoryController extends Controller
     if ($validate->fails()) {
       return redirect()->route('dashboard.categories.create')->withErrors($validate)->withInput();
     }
-    // dd($request->all());
 
     DB::beginTransaction();
     try {
@@ -81,10 +79,10 @@ class CategoryController extends Controller
       ]);
 
       DB::commit();
-      return redirect()->route('/dashboard/categories');
+      return redirect()->route('dashboard.categories.index');
     } catch (\Exception $e) {
       DB::rollBack();
-      return redirect()->route('/dashboard/categories/add')->with('err', 'Failed create category');
+      return redirect()->route('dashboard.categories.create')->with('err', 'Failed create category');
     }
   }
 
@@ -93,7 +91,7 @@ class CategoryController extends Controller
    */
   public function edit(Category $category)
   {
-    return Inertia('Dashboard/Categories/edit');
+    return Inertia('Dashboard/Categories/edit', compact('category'));
   }
 
   /**
@@ -101,7 +99,32 @@ class CategoryController extends Controller
    */
   public function update(Request $request, Category $category)
   {
-    //
+    $validate = Validator::make($request->all(), [
+      'name'        => 'required',
+      'slug'        => 'required|unique:categories,slug,' . $category->id_category . ',id_category',
+      'description' => 'sometimes|nullable',
+    ]);
+
+    if ($validate->fails()) {
+      return redirect()->route('dashboard.categories.edit', $category->slug)->withErrors($validate)->withInput();
+    }
+
+    DB::beginTransaction();
+    try {
+      $category->update([
+        'name'        => $request->name,
+        'slug'        => Str::slug($request->slug),
+        'description' => $request->description,
+        'created_by'  => Auth::id(),
+        'created_at'  => now(),
+      ]);
+
+      DB::commit();
+      return redirect()->route('dashboard.categories.index');
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return redirect()->route('dashboard.categories.edit', $category->slug)->with('err', 'Failed create category');
+    }
   }
 
   /**
@@ -109,7 +132,19 @@ class CategoryController extends Controller
    */
   public function destroy(Category $category)
   {
-    //
+    DB::beginTransaction();
+    try {
+      $category->deleted_at = now();
+      $category->deleted_by = Auth::id();
+      $category->save();
+      $category->delete();
+
+      DB::commit();
+      return redirect()->route('dashboard.categories.index')->withSuccess('Success delete category')->withInput();
+    } catch (\Throwable $e) {
+      DB::rollback();
+      return redirect()->route('dashboard.categories.index')->withErrors(['error' => 'Gagal delete category'])->withInput();
+    }
   }
 
   /**
@@ -117,8 +152,23 @@ class CategoryController extends Controller
    */
   public function bulkDestroy(Request $request)
   {
-    $request->validate(['ids' => 'required|array']);
-    Category::whereIn('id_category', $request->ids)->delete();
-    return back();
+    $validate = Validator::make($request->all(), ['ids' => 'required|array']);
+
+    if ($validate->fails()) {
+      return redirect()->route('dashboard.categories.index')->withErrors($validate)->withInput();
+    }
+
+    try {
+      $categories = Category::whereIn('id_category', $request->ids)->update([
+        "deleted_at" => now(),
+        "deleted_by" => Auth::id(),
+      ]);
+
+      DB::commit();
+      return redirect()->route('dashboard.categories.index')->withSuccess('Success delete category')->withInput();
+    } catch (\Throwable $e) {
+      DB::rollback();
+      return redirect()->route('dashboard.categories.index')->withErrors(['error' => 'Gagal delete category'])->withInput();
+    }
   }
 }
