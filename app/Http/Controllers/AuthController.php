@@ -44,7 +44,7 @@ class AuthController extends Controller
 
       return redirect()->route('dashboard.index');
     } catch (Exception $e) {
-      return redirect()->route('/login')->withErrors(['email' => 'Something wrong.']);
+      return redirect()->route('login')->withErrors(['email' => 'Something wrong.']);
     }
   }
 
